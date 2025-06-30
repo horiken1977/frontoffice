@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>開発計画書 - フロントオフィス生産性向上アプリケーション</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .section-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .feature-item {
+            transition: background-color 0.2s ease-in-out;
+        }
+        .feature-item:hover {
+            background-color: #f8fafc;
+        }
+        .phase-badge {
+            animation: pulse 2s infinite;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
+                <div class="space-x-4">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
+                    <a href="plan.html" class="text-gray-800 font-medium border-b-2 border-blue-600">開発計画書</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- ヘッダー -->
+        <header class="mb-8 fade-in-up">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">開発計画書</h1>
+            <p class="text-xl text-gray-600 mb-4">フロントオフィス生産性向上アプリケーション</p>
+            <div class="flex items-center space-x-4">
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium phase-badge">Phase 1: MVP開発</span>
+                <span class="text-gray-500 text-sm">バージョン: v1.0</span>
+                <span class="text-gray-500 text-sm">最終更新: 2025-06-30</span>
+            </div>
+        </header>
+
+        <!-- プロジェクト概要 -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">1</span>
+                    プロジェクト概要
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">目的</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            全業種業界のフロントオフィス（営業、マーケティング、コンタクトセンター）の生産性向上を目的とし、AIチャットベースの対話を通じて人間の業務負荷を削減する。
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">対象ユーザー</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-gray-600">
+                                <span class="bg-green-100 text-green-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-2">●</span>
+                                営業パーソン
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <span class="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-2">●</span>
+                                マーケティング担当者
+                            </li>
+                            <li class="flex items-center text-gray-600">
+                                <span class="bg-purple-100 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-2">●</span>
+                                コンタクトセンターオペレーター
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 開発アプローチ -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">2</span>
+                    開発アプローチ
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-2">MVP（Minimum Viable Product）ファースト</h3>
+                        <p class="text-blue-700">最小限の機能でリリースし、ユーザーフィードバックを基にインクリメンタルに機能追加</p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-green-800 mb-2">モジュラー設計</h3>
+                        <p class="text-green-700">後追い機能追加に対応できる拡張性を重視した設計</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 1: MVP機能 -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">3</span>
+                    Phase 1: MVP機能（必須）
+                </h2>
+                
+                <!-- 営業機能 -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium mr-3">営業機能</span>
+                    </h3>
+                    <div class="grid gap-3">
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">1</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">チャットベースの要求入力インターフェース</h4>
+                                    <p class="text-gray-600 text-sm mt-1">直感的なチャット形式で営業要求を入力できるUI</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">2</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">社内DB・ファイルサーバー（クラウド含む）検索機能</h4>
+                                    <p class="text-gray-600 text-sm mt-1">既存の社内データベースやクラウドストレージとの連携</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">3</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">対象顧客の目指す姿・現場の課題分析</h4>
+                                    <p class="text-gray-600 text-sm mt-1">顧客情報を分析し、ニーズと課題を自動抽出</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">4</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">提案作成機能（社外2次情報検索 + 社内DB検索結果分析）</h4>
+                                    <p class="text-gray-600 text-sm mt-1">内外のデータを統合して最適な提案を自動生成</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">5</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">次のアクション確認（CRM/SFA連携）</h4>
+                                    <p class="text-gray-600 text-sm mt-1">既存のCRM/SFAシステムと連携し、次のステップを提案</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">6</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">見積作成機能（タリフ有無にかかわらず）</h4>
+                                    <p class="text-gray-600 text-sm mt-1">料金表の有無に関係なく、適切な見積を自動生成</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">7</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">自社提案の妥当性確認（競合比較分析）</h4>
+                                    <p class="text-gray-600 text-sm mt-1">他社との比較分析で提案の訴求力を評価</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- マーケティング機能 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mr-3">マーケティング機能</span>
+                    </h3>
+                    <div class="grid gap-3">
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">1</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">DeepResearchを活用した仮想ペルソナ作成</h4>
+                                    <p class="text-gray-600 text-sm mt-1">詳細な市場調査に基づいた精度の高いペルソナ設計</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">2</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">仮想ペルソナへのインタビュー機能（LLMとの対話）</h4>
+                                    <p class="text-gray-600 text-sm mt-1">AIが作成したペルソナと自然言語で対話してインサイト収集</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-item p-4 border rounded-lg">
+                            <div class="flex items-start">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">3</span>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">インタビュー回答一覧保存・管理</h4>
+                                    <p class="text-gray-600 text-sm mt-1">収集したインサイトの体系的な保存と分析機能</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2: 拡張機能 -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">4</span>
+                    Phase 2: 拡張機能
+                </h2>
+                <div class="grid gap-3">
+                    <div class="feature-item p-4 border rounded-lg bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-semibold text-gray-600">アフターサービス機能</h4>
+                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">詳細検討中</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-1">顧客満足度向上とリテンション強化のための機能群</p>
+                    </div>
+                    <div class="feature-item p-4 border rounded-lg bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-semibold text-gray-600">ログイン・認証機能</h4>
+                            <span class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded text-xs">オプション</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-1">セキュアなユーザー管理と権限制御</p>
+                    </div>
+                    <div class="feature-item p-4 border rounded-lg bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-semibold text-gray-600">マイページ機能</h4>
+                            <span class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded text-xs">オプション</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-1">個人設定と利用履歴の管理画面</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技術アーキテクチャ -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">5</span>
+                    技術アーキテクチャ
+                </h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-indigo-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-indigo-800 mb-3">フロントエンド</h3>
+                        <ul class="space-y-2 text-indigo-700 text-sm">
+                            <li>• React.js または Vue.js</li>
+                            <li>• Tailwind CSS または Material-UI</li>
+                            <li>• Redux/Zustand または Vuex/Pinia</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-green-800 mb-3">バックエンド</h3>
+                        <ul class="space-y-2 text-green-700 text-sm">
+                            <li>• Node.js (Express) または Python (FastAPI)</li>
+                            <li>• PostgreSQL または MongoDB</li>
+                            <li>• OpenAI API, Anthropic Claude API</li>
+                        </ul>
+                    </div>
+                    <div class="bg-orange-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-orange-800 mb-3">インフラ</h3>
+                        <ul class="space-y-2 text-orange-700 text-sm">
+                            <li>• Vercel, Netlify, または AWS</li>
+                            <li>• Supabase, PlanetScale, または AWS RDS</li>
+                            <li>• AWS S3 または Google Cloud Storage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 開発スケジュール -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">6</span>
+                    開発スケジュール（8週間）
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4 py-3">
+                            <h3 class="font-semibold text-gray-800">Sprint 1 (Week 1-2): 基盤構築</h3>
+                            <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                                <li>• プロジェクト環境セットアップ</li>
+                                <li>• 基本的なUI/UXデザイン</li>
+                                <li>• チャットインターフェースの実装</li>
+                                <li>• 基本的なバックエンドAPI構築</li>
+                            </ul>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4 py-3">
+                            <h3 class="font-semibold text-gray-800">Sprint 2 (Week 3-4): 営業機能MVP</h3>
+                            <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                                <li>• 社内DB検索機能実装</li>
+                                <li>• 顧客分析機能実装</li>
+                                <li>• 基本的な提案作成機能実装</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-purple-500 pl-4 py-3">
+                            <h3 class="font-semibold text-gray-800">Sprint 3 (Week 5-6): マーケティング機能MVP</h3>
+                            <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                                <li>• 仮想ペルソナ作成機能実装</li>
+                                <li>• ペルソナインタビュー機能実装</li>
+                                <li>• 回答保存・管理機能実装</li>
+                            </ul>
+                        </div>
+                        <div class="border-l-4 border-red-500 pl-4 py-3">
+                            <h3 class="font-semibold text-gray-800">Sprint 4 (Week 7-8): 統合・テスト・デプロイ</h3>
+                            <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                                <li>• 機能統合・テスト</li>
+                                <li>• パフォーマンス最適化</li>
+                                <li>• 本番環境デプロイ</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 成功指標 -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-emerald-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">7</span>
+                    成功指標（KPI）
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-3">MVP期間</h3>
+                        <ul class="space-y-2 text-blue-700 text-sm">
+                            <li class="flex items-center">
+                                <span class="text-green-600 mr-2">✓</span>
+                                基本機能の動作確認
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-yellow-600 mr-2">○</span>
+                                初期ユーザー10名以上の獲得
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-yellow-600 mr-2">○</span>
+                                1週間のアクティブユーザー率50%以上
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-green-800 mb-3">本格運用期間</h3>
+                        <ul class="space-y-2 text-green-700 text-sm">
+                            <li class="flex items-center">
+                                <span class="text-gray-400 mr-2">○</span>
+                                月間アクティブユーザー100名以上
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-gray-400 mr-2">○</span>
+                                ユーザー業務効率20%以上向上
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-gray-400 mr-2">○</span>
+                                顧客満足度4.0/5.0以上
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 次のステップ -->
+        <section class="mb-8">
+            <div class="section-card bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <span class="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">8</span>
+                    次のステップ
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">即座に実行</h3>
+                        <ul class="space-y-2 text-blue-100">
+                            <li>• 技術スタック最終決定</li>
+                            <li>• 開発環境セットアップ</li>
+                            <li>• UIモックアップ作成</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">準備段階</h3>
+                        <ul class="space-y-2 text-blue-100">
+                            <li>• バックエンドAPI設計</li>
+                            <li>• Sprint 1開始</li>
+                            <li>• チーム体制確立</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer class="text-center text-gray-500 mt-8">
+            <div class="border-t pt-6">
+                <p>&copy; 2025 フロントオフィス生産性向上アプリケーション開発プロジェクト</p>
+                <p class="text-sm mt-2">バージョン: v1.0 | 最終更新: 2025-06-30</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // スムーズスクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // スクロール時のアニメーション
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
