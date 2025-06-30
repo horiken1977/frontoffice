@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIエージェントソリューション調査レポート - フロントオフィス生産性向上アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .section-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .comparison-table {
+            overflow-x: auto;
+        }
+        .pro-con-list {
+            min-height: 120px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
+                <div class="space-x-4">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
+                    <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
+                    <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
+                    <a href="ai-agent-research.html" class="text-gray-800 font-medium border-b-2 border-blue-600">AI調査レポート</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- ヘッダー -->
+        <header class="mb-8 fade-in-up">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">AIエージェントソリューション調査レポート</h1>
+            <p class="text-xl text-gray-600 mb-4">フロントオフィス業務自動化のための包括的分析</p>
+            <div class="flex items-center space-x-4">
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">調査完了</span>
+                <span class="text-gray-500 text-sm">調査期間: 2025年6月30日</span>
+                <span class="text-gray-500 text-sm">対象: 2024-2025年最新ソリューション</span>
+            </div>
+        </header>
+
+        <!-- エグゼクティブサマリー -->
+        <section class="mb-8">
+            <div class="section-card bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <span class="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">📊</span>
+                    エグゼクティブサマリー
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">主要な発見</h3>
+                        <ul class="space-y-2 text-blue-100">
+                            <li>• <strong>LangChain</strong>が2024-2025年のマーケットリーダー（GitHub star 220%増）</li>
+                            <li>• <strong>HubSpot Breeze</strong>が営業・マーケティング特化で最も実用的</li>
+                            <li>• <strong>n8n</strong>がワークフロー統合において最もコスト効率的</li>
+                            <li>• 企業導入で40-60%の業務効率向上を実現</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">推奨アプローチ</h3>
+                        <ul class="space-y-2 text-blue-100">
+                            <li>• <strong>短期（MVP）:</strong> HubSpot Breeze + n8n統合</li>
+                            <li>• <strong>中期:</strong> CrewAI でマルチエージェント拡張</li>
+                            <li>• <strong>長期:</strong> LangGraph による複雑ワークフロー構築</li>
+                            <li>• <strong>予算:</strong> 月額$200-800（規模に応じて）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ソリューション分類 -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">ソリューション分類</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Ready-to-Use Solutions -->
+                <div class="section-card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-green-800 mb-3 flex items-center">
+                        <span class="bg-green-100 rounded-full w-8 h-8 flex items-center justify-center mr-2">🚀</span>
+                        即導入可能ソリューション
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-green-400 pl-3">
+                            <h4 class="font-medium">HubSpot Breeze</h4>
+                            <p class="text-sm text-gray-600">営業・マーケティング特化</p>
+                        </div>
+                        <div class="border-l-4 border-green-400 pl-3">
+                            <h4 class="font-medium">Salesforce Einstein</h4>
+                            <p class="text-sm text-gray-600">CRM統合エージェント</p>
+                        </div>
+                        <div class="border-l-4 border-green-400 pl-3">
+                            <h4 class="font-medium">Zapier Agents</h4>
+                            <p class="text-sm text-gray-600">7000+アプリ統合</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-500">
+                        ✅ 即座に導入可能<br>
+                        ⏱️ 設定期間: 1-2週間<br>
+                        💰 コスト: $50-300/月
+                    </div>
+                </div>
+
+                <!-- Workflow Orchestration -->
+                <div class="section-card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+                        <span class="bg-blue-100 rounded-full w-8 h-8 flex items-center justify-center mr-2">🔧</span>
+                        ワークフロー統合
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-400 pl-3">
+                            <h4 class="font-medium">n8n</h4>
+                            <p class="text-sm text-gray-600">最もコスト効率的</p>
+                        </div>
+                        <div class="border-l-4 border-blue-400 pl-3">
+                            <h4 class="font-medium">Make.com</h4>
+                            <p class="text-sm text-gray-600">ビジュアル設計重視</p>
+                        </div>
+                        <div class="border-l-4 border-blue-400 pl-3">
+                            <h4 class="font-medium">Microsoft Power Automate</h4>
+                            <p class="text-sm text-gray-600">Office 365統合</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-500">
+                        🔄 複数AI統合可能<br>
+                        ⏱️ 設定期間: 2-4週間<br>
+                        💰 コスト: $50-500/月
+                    </div>
+                </div>
+
+                <!-- Custom Development -->
+                <div class="section-card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+                        <span class="bg-purple-100 rounded-full w-8 h-8 flex items-center justify-center mr-2">⚡</span>
+                        カスタム開発
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-purple-400 pl-3">
+                            <h4 class="font-medium">LangGraph</h4>
+                            <p class="text-sm text-gray-600">複雑ワークフロー最適</p>
+                        </div>
+                        <div class="border-l-4 border-purple-400 pl-3">
+                            <h4 class="font-medium">CrewAI</h4>
+                            <p class="text-sm text-gray-600">マルチエージェント特化</p>
+                        </div>
+                        <div class="border-l-4 border-purple-400 pl-3">
+                            <h4 class="font-medium">Microsoft AutoGen</h4>
+                            <p class="text-sm text-gray-600">エンタープライズ向け</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-500">
+                        🎯 完全カスタマイズ可能<br>
+                        ⏱️ 開発期間: 2-6ヶ月<br>
+                        💰 コスト: 開発費$10K-50K+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 詳細比較表 -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">主要ソリューション詳細比較</h2>
+            <div class="comparison-table">
+                <div class="grid gap-6">
+                    <!-- HubSpot Breeze -->
+                    <div class="section-card bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">HubSpot Breeze</h3>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">推奨 - MVP</span>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">主要機能</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 営業プロスペクト自動化</li>
+                                    <li>• マーケティングコンテンツ生成</li>
+                                    <li>• CRM統合エージェント</li>
+                                    <li>• ソーシャルメディア管理</li>
+                                    <li>• カスタマーサービス自動化</li>
+                                </ul>
+                            </div>
+                            <div class="pro-con-list">
+                                <h4 class="font-semibold text-green-700 mb-2">メリット</h4>
+                                <ul class="text-sm text-green-600 space-y-1">
+                                    <li>✅ 即座に利用開始可能</li>
+                                    <li>✅ フロントオフィス業務に特化</li>
+                                    <li>✅ 実証済みROI（20-25%向上）</li>
+                                    <li>✅ 豊富な統合オプション</li>
+                                </ul>
+                                <h4 class="font-semibold text-red-700 mb-2 mt-3">デメリット</h4>
+                                <ul class="text-sm text-red-600 space-y-1">
+                                    <li>❌ HubSpotエコシステム依存</li>
+                                    <li>❌ カスタマイズ制限</li>
+                                    <li>❌ 高度なワークフロー制約</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">コスト・導入</h4>
+                                <div class="text-sm text-gray-600 space-y-2">
+                                    <div class="bg-blue-50 p-2 rounded">
+                                        <strong>月額コスト:</strong> $800-2000<br>
+                                        <strong>初期設定:</strong> 1-2週間<br>
+                                        <strong>学習コスト:</strong> 低
+                                    </div>
+                                    <div class="bg-green-50 p-2 rounded">
+                                        <strong>適用場面:</strong><br>
+                                        既存CRM活用、迅速な導入、営業・マーケティング中心
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- n8n + AI APIs -->
+                    <div class="section-card bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">n8n + AI APIs</h3>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">推奨 - 統合</span>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">主要機能</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• OpenAI/Claude/Gemini統合</li>
+                                    <li>• 1500+のアプリ連携</li>
+                                    <li>• RAGワークフロー</li>
+                                    <li>• バッチ処理対応</li>
+                                    <li>• Webhook API統合</li>
+                                </ul>
+                            </div>
+                            <div class="pro-con-list">
+                                <h4 class="font-semibold text-green-700 mb-2">メリット</h4>
+                                <ul class="text-sm text-green-600 space-y-1">
+                                    <li>✅ 最もコスト効率的</li>
+                                    <li>✅ 複数AIプロバイダー統合</li>
+                                    <li>✅ ビジュアルワークフロー</li>
+                                    <li>✅ オープンソース</li>
+                                </ul>
+                                <h4 class="font-semibold text-red-700 mb-2 mt-3">デメリット</h4>
+                                <ul class="text-sm text-red-600 space-y-1">
+                                    <li>❌ 技術的知識が必要</li>
+                                    <li>❌ 初期設定の複雑さ</li>
+                                    <li>❌ サポート体制制限</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">コスト・導入</h4>
+                                <div class="text-sm text-gray-600 space-y-2">
+                                    <div class="bg-blue-50 p-2 rounded">
+                                        <strong>月額コスト:</strong> $50-500<br>
+                                        <strong>初期設定:</strong> 2-4週間<br>
+                                        <strong>学習コスト:</strong> 中
+                                    </div>
+                                    <div class="bg-green-50 p-2 rounded">
+                                        <strong>適用場面:</strong><br>
+                                        コスト最適化、複数AI統合、柔軟なカスタマイズ
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CrewAI -->
+                    <div class="section-card bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">CrewAI</h3>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">推奨 - 拡張</span>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">主要機能</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• マルチエージェント協調</li>
+                                    <li>• 役割ベースエージェント</li>
+                                    <li>• 700+アプリ統合</li>
+                                    <li>• 迅速プロトタイピング</li>
+                                    <li>• タスク分散処理</li>
+                                </ul>
+                            </div>
+                            <div class="pro-con-list">
+                                <h4 class="font-semibold text-green-700 mb-2">メリット</h4>
+                                <ul class="text-sm text-green-600 space-y-1">
+                                    <li>✅ 迅速な開発・展開</li>
+                                    <li>✅ 直感的な設計思想</li>
+                                    <li>✅ 大企業採用実績</li>
+                                    <li>✅ モジュラー構造</li>
+                                </ul>
+                                <h4 class="font-semibold text-red-700 mb-2 mt-3">デメリット</h4>
+                                <ul class="text-sm text-red-600 space-y-1">
+                                    <li>❌ エンタープライズ機能制限</li>
+                                    <li>❌ 複雑ワークフロー制約</li>
+                                    <li>❌ Python開発スキル必要</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">コスト・導入</h4>
+                                <div class="text-sm text-gray-600 space-y-2">
+                                    <div class="bg-blue-50 p-2 rounded">
+                                        <strong>月額コスト:</strong> $200-1000<br>
+                                        <strong>初期設定:</strong> 3-6週間<br>
+                                        <strong>学習コスト:</strong> 中-高
+                                    </div>
+                                    <div class="bg-green-50 p-2 rounded">
+                                        <strong>適用場面:</strong><br>
+                                        マルチエージェント、協調作業、中規模展開
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LangGraph -->
+                    <div class="section-card bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">LangGraph</h3>
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">長期戦略</span>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">主要機能</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• グラフベースワークフロー</li>
+                                    <li>• ステートフル処理</li>
+                                    <li>• 循環フロー対応</li>
+                                    <li>• 永続メモリ</li>
+                                    <li>• 複雑な状態管理</li>
+                                </ul>
+                            </div>
+                            <div class="pro-con-list">
+                                <h4 class="font-semibold text-green-700 mb-2">メリット</h4>
+                                <ul class="text-sm text-green-600 space-y-1">
+                                    <li>✅ 最高度の制御可能性</li>
+                                    <li>✅ 複雑ワークフロー最適</li>
+                                    <li>✅ LangChainエコシステム</li>
+                                    <li>✅ 企業級スケーラビリティ</li>
+                                </ul>
+                                <h4 class="font-semibold text-red-700 mb-2 mt-3">デメリット</h4>
+                                <ul class="text-sm text-red-600 space-y-1">
+                                    <li>❌ 高い開発複雑度</li>
+                                    <li>❌ 長期開発期間</li>
+                                    <li>❌ 専門スキル必須</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">コスト・導入</h4>
+                                <div class="text-sm text-gray-600 space-y-2">
+                                    <div class="bg-blue-50 p-2 rounded">
+                                        <strong>開発コスト:</strong> $20K-100K<br>
+                                        <strong>開発期間:</strong> 3-6ヶ月<br>
+                                        <strong>学習コスト:</strong> 高
+                                    </div>
+                                    <div class="bg-green-50 p-2 rounded">
+                                        <strong>適用場面:</strong><br>
+                                        超複雑ワークフロー、独自要件、長期投資
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 推奨実装ロードマップ -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">🗺️</span>
+                    推奨実装ロードマップ
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Phase 1: MVP -->
+                    <div class="border-l-4 border-green-500 pl-6">
+                        <h3 class="text-lg font-semibold text-green-800 mb-2">Phase 1: MVP（1-2ヶ月）</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-700 mb-2">推奨ソリューション</h4>
+                                <div class="bg-green-50 p-3 rounded">
+                                    <p class="font-medium">HubSpot Breeze + n8n 統合</p>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        迅速な導入と実証を重視。HubSpotの営業・マーケティング機能をベースに、
+                                        n8nで追加のワークフロー自動化を実装。
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-700 mb-2">実装内容</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• チャット入力からHubSpot CRMへの自動データ投入</li>
+                                    <li>• 基本的な顧客分析・提案生成</li>
+                                    <li>• 見積作成の半自動化</li>
+                                    <li>• シンプルなペルソナ作成</li>
+                                </ul>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    💰 予算: $1,000-2,500/月 | ⏱️ 期間: 4-6週間
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2: 拡張 -->
+                    <div class="border-l-4 border-blue-500 pl-6">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-2">Phase 2: マルチエージェント拡張（3-4ヶ月）</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-700 mb-2">推奨ソリューション</h4>
+                                <div class="bg-blue-50 p-3 rounded">
+                                    <p class="font-medium">CrewAI + 既存システム統合</p>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        Phase 1の成功を基に、より高度なマルチエージェント協調システムを構築。
+                                        役割分担による専門性の向上を図る。
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-700 mb-2">実装内容</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 営業エージェント、マーケエージェントの専門化</li>
+                                    <li>• 社内DB・外部情報の高度な検索統合</li>
+                                    <li>• 競合分析エージェントの追加</li>
+                                    <li>• ペルソナインタビュー機能の高度化</li>
+                                </ul>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    💰 予算: $2,000-4,000/月 | ⏱️ 期間: 8-12週間
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3: 最適化 -->
+                    <div class="border-l-4 border-purple-500 pl-6">
+                        <h3 class="text-lg font-semibold text-purple-800 mb-2">Phase 3: 複雑ワークフロー（6ヶ月+）</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-700 mb-2">推奨ソリューション</h4>
+                                <div class="bg-purple-50 p-3 rounded">
+                                    <p class="font-medium">LangGraph カスタム開発</p>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        企業固有の複雑な業務フローに対応するため、
+                                        完全カスタムのエージェントシステムを構築。
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-700 mb-2">実装内容</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 高度な状態管理とワークフロー制御</li>
+                                    <li>• 学習機能付きエージェント</li>
+                                    <li>• リアルタイム協調処理</li>
+                                    <li>• アフターサービス機能の本格実装</li>
+                                </ul>
+                                <div class="mt-2 text-xs text-gray-500">
+                                    💰 予算: 開発費$30K-80K + $1,000-3,000/月 | ⏱️ 期間: 4-6ヶ月
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 結論と次のステップ -->
+        <section class="mb-8">
+            <div class="section-card bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <span class="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">✅</span>
+                    結論と次のステップ
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">最終推奨</h3>
+                        <div class="bg-white/10 rounded-lg p-4">
+                            <p class="text-green-100 mb-2"><strong>MVP期間（次の2ヶ月）:</strong></p>
+                            <ul class="space-y-1 text-green-100 text-sm">
+                                <li>• HubSpot Breeze で営業・マーケティング基盤構築</li>
+                                <li>• n8n で追加ワークフロー自動化</li>
+                                <li>• OpenAI/Claude API統合でAI機能強化</li>
+                                <li>• 月額予算: $1,500-2,500</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3">即座に実行すべきアクション</h3>
+                        <ul class="space-y-2 text-blue-100">
+                            <li>• HubSpot Breezeの無料トライアル開始</li>
+                            <li>• n8nのセットアップと基本ワークフロー作成</li>
+                            <li>• OpenAI/Claude APIキーの取得</li>
+                            <li>• Phase 1実装計画の詳細設計</li>
+                            <li>• ROI測定指標の定義</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer class="text-center text-gray-500 mt-8">
+            <div class="border-t pt-6">
+                <p>&copy; 2025 フロントオフィス生産性向上アプリケーション開発プロジェクト</p>
+                <p class="text-sm mt-2">調査完了日: 2025-06-30 | 次回更新予定: Phase 1完了後</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // スクロール時のアニメーション
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // 詳細展開機能
+        document.querySelectorAll('.section-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'A') {
+                    this.style.transform = this.style.transform === 'scale(1.02)' ? 'scale(1)' : 'scale(1.02)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
