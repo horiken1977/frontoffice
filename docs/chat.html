@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チャット入力 - フロントオフィス生産性向上アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .chat-container {
+            height: calc(100vh - 200px);
+            min-height: 500px;
+        }
+        .message {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .typing-indicator {
+            animation: pulse 1.5s infinite;
+        }
+        .send-button:hover {
+            transform: scale(1.05);
+        }
+        .send-button {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
+                <div class="space-x-4">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
+                    <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
+                    <a href="chat.html" class="text-gray-800 font-medium border-b-2 border-blue-600">チャット入力</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-6">
+        <!-- ヘッダー -->
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">AI アシスタント</h1>
+            <p class="text-gray-600">営業・マーケティング業務をサポートします</p>
+        </header>
+
+        <!-- チャット画面 -->
+        <div class="bg-white rounded-lg shadow-md chat-container flex flex-col">
+            <!-- チャット履歴エリア -->
+            <div id="chatMessages" class="flex-1 p-6 overflow-y-auto space-y-4">
+                <!-- 初期メッセージ -->
+                <div class="message flex items-start space-x-3">
+                    <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        AI
+                    </div>
+                    <div class="bg-blue-50 rounded-lg px-4 py-3 max-w-md">
+                        <p class="text-gray-800">こんにちは！フロントオフィス業務をサポートするAIアシスタントです。</p>
+                        <p class="text-gray-800 mt-2">以下のような業務をお手伝いできます：</p>
+                        <ul class="list-disc list-inside text-gray-700 mt-2 text-sm space-y-1">
+                            <li>営業提案の作成</li>
+                            <li>顧客分析</li>
+                            <li>見積もり作成</li>
+                            <li>マーケティング戦略立案</li>
+                            <li>ペルソナ作成・分析</li>
+                        </ul>
+                        <p class="text-gray-800 mt-2">何かお手伝いできることはありますか？</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 入力エリア -->
+            <div class="border-t bg-gray-50 p-4">
+                <div class="flex items-end space-x-3">
+                    <div class="flex-1">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="メッセージを入力してください..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            rows="3"
+                            maxlength="1000"
+                        ></textarea>
+                        <div class="text-right text-xs text-gray-500 mt-1">
+                            <span id="charCount">0</span>/1000文字
+                        </div>
+                    </div>
+                    <button 
+                        id="sendButton"
+                        class="send-button bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        送信
+                    </button>
+                </div>
+                
+                <!-- クイックアクション -->
+                <div class="mt-4">
+                    <p class="text-sm text-gray-600 mb-2">クイックアクション:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="quick-action bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm" data-message="新規顧客への提案書を作成したいです">
+                            提案書作成
+                        </button>
+                        <button class="quick-action bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm" data-message="既存顧客の課題分析をお願いします">
+                            顧客分析
+                        </button>
+                        <button class="quick-action bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm" data-message="見積もりを作成してください">
+                            見積作成
+                        </button>
+                        <button class="quick-action bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm" data-message="ターゲットペルソナを作成したいです">
+                            ペルソナ作成
+                        </button>
+                        <button class="quick-action bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm" data-message="競合分析を実施してください">
+                            競合分析
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 機能説明 -->
+        <div class="mt-6 grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                    <span class="bg-red-100 text-red-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-2">営</span>
+                    営業機能
+                </h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• 顧客情報に基づく課題分析</li>
+                    <li>• カスタマイズされた提案書作成</li>
+                    <li>• 見積もり自動生成</li>
+                    <li>• 次のアクション提案</li>
+                    <li>• 競合比較分析</li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                    <span class="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-2">マ</span>
+                    マーケティング機能
+                </h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• 仮想ペルソナ作成</li>
+                    <li>• ペルソナインタビュー実施</li>
+                    <li>• 市場調査・分析</li>
+                    <li>• マーケティング戦略立案</li>
+                    <li>• キャンペーン企画支援</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 注意事項 -->
+        <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <span class="text-yellow-400 text-xl">⚠️</span>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-yellow-800">開発中のMVP機能</h3>
+                    <p class="mt-1 text-sm text-yellow-700">
+                        現在は基本的なチャット入力画面のみ実装されています。AI応答機能は次のスプリントで実装予定です。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const charCount = document.getElementById('charCount');
+        const chatMessages = document.getElementById('chatMessages');
+        const quickActions = document.querySelectorAll('.quick-action');
+
+        // 文字数カウント
+        messageInput.addEventListener('input', function() {
+            const length = this.value.length;
+            charCount.textContent = length;
+            sendButton.disabled = length === 0;
+        });
+
+        // Enter + Shift で改行、Enter のみで送信
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (!sendButton.disabled) {
+                    sendMessage();
+                }
+            }
+        });
+
+        // 送信ボタン
+        sendButton.addEventListener('click', sendMessage);
+
+        // クイックアクション
+        quickActions.forEach(button => {
+            button.addEventListener('click', function() {
+                const message = this.getAttribute('data-message');
+                messageInput.value = message;
+                messageInput.dispatchEvent(new Event('input'));
+                messageInput.focus();
+            });
+        });
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // ユーザーメッセージを追加
+            addMessage('user', message);
+
+            // 入力をクリア
+            messageInput.value = '';
+            messageInput.dispatchEvent(new Event('input'));
+
+            // AI応答をシミュレート（MVP段階）
+            setTimeout(() => {
+                addMessage('ai', 'ありがとうございます。現在はMVP開発段階のため、実際のAI処理機能は次のスプリントで実装予定です。入力内容は正常に受信されました。');
+            }, 1000);
+        }
+
+        function addMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message flex items-start space-x-3';
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        You
+                    </div>
+                    <div class="bg-gray-100 rounded-lg px-4 py-3 max-w-md">
+                        <p class="text-gray-800">${text}</p>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        AI
+                    </div>
+                    <div class="bg-blue-50 rounded-lg px-4 py-3 max-w-md">
+                        <p class="text-gray-800">${text}</p>
+                    </div>
+                `;
+            }
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 初期フォーカス
+        messageInput.focus();
+    </script>
+</body>
+</html>
