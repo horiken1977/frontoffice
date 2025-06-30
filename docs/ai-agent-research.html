@@ -77,11 +77,11 @@
                     <div>
                         <h3 class="text-lg font-semibold mb-3">推奨アプローチ</h3>
                         <ul class="space-y-2 text-blue-100">
-                            <li>• <strong>IBM環境:</strong> watsonx.orchestrate 単独導入</li>
-                            <li>• <strong>短期（MVP）:</strong> HubSpot Breeze + n8n統合</li>
-                            <li>• <strong>中期:</strong> CrewAI でマルチエージェント拡張</li>
-                            <li>• <strong>長期:</strong> LangGraph による複雑ワークフロー構築</li>
-                            <li>• <strong>予算:</strong> 月額$500-2000（IBMの場合）、$200-800（その他）</li>
+                            <li>• <strong>💰 ゼロコスト開始:</strong> Dify/Flowise + Gemini無料ティア</li>
+                            <li>• <strong>📈 最小投資:</strong> n8n + 従量課金API（月$50-200）</li>
+                            <li>• <strong>🚀 本格展開:</strong> HubSpot/CrewAI（月$500-1500）</li>
+                            <li>• <strong>🏢 エンタープライズ:</strong> IBM watsonx.orchestrate（月$1500-3000）</li>
+                            <li>• <strong>予算:</strong> $0 → $200 → $1500 → $3000（段階的）</li>
                         </ul>
                     </div>
                 </div>
@@ -91,7 +91,34 @@
         <!-- ソリューション分類 -->
         <section class="mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">ソリューション分類</h2>
-            <div class="grid md:grid-cols-4 gap-6">
+            <div class="grid md:grid-cols-5 gap-4">
+                <!-- Zero Cost Solutions -->
+                <div class="section-card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+                        <span class="bg-purple-100 rounded-full w-8 h-8 flex items-center justify-center mr-2">💰</span>
+                        ゼロコスト開始
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-purple-400 pl-3">
+                            <h4 class="font-medium">Dify (オープンソース)</h4>
+                            <p class="text-sm text-gray-600">90K+ GitHub stars</p>
+                        </div>
+                        <div class="border-l-4 border-purple-400 pl-3">
+                            <h4 class="font-medium">Flowise</h4>
+                            <p class="text-sm text-gray-600">ドラッグ&ドロップAI構築</p>
+                        </div>
+                        <div class="border-l-4 border-purple-400 pl-3">
+                            <h4 class="font-medium">Google Gemini Flash</h4>
+                            <p class="text-sm text-gray-600">完全無料ティア</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-500">
+                        ✅ 完全無料で開始可能<br>
+                        ⏱️ 設定期間: 1-2週間<br>
+                        💰 コスト: $0/月
+                    </div>
+                </div>
+
                 <!-- IBM Enterprise Solutions -->
                 <div class="section-card bg-white rounded-lg shadow-md p-6">
                     <h3 class="text-lg font-semibold text-blue-800 mb-3 flex items-center">
@@ -403,6 +430,55 @@
                         </div>
                     </div>
 
+                    <!-- Dify (オープンソース) -->
+                    <div class="section-card bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Dify (オープンソース)</h3>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">推奨 - ゼロコスト</span>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">主要機能</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• ノーコードAIエージェント構築</li>
+                                    <li>• 90+ LLM統合サポート</li>
+                                    <li>• RAG、Function Calling対応</li>
+                                    <li>• セルフホスト可能</li>
+                                    <li>• 継続学習システム</li>
+                                </ul>
+                            </div>
+                            <div class="pro-con-list">
+                                <h4 class="font-semibold text-green-700 mb-2">メリット</h4>
+                                <ul class="text-sm text-green-600 space-y-1">
+                                    <li>✅ 完全無料（オープンソース）</li>
+                                    <li>✅ 90K+ GitHub stars</li>
+                                    <li>✅ 非技術者でも利用可能</li>
+                                    <li>✅ 豊富なLLM選択肢</li>
+                                </ul>
+                                <h4 class="font-semibold text-red-700 mb-2 mt-3">デメリット</h4>
+                                <ul class="text-sm text-red-600 space-y-1">
+                                    <li>❌ セルフホスト・管理が必要</li>
+                                    <li>❌ エンタープライズサポート限定</li>
+                                    <li>❌ 複雑ワークフロー制約</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">コスト・導入</h4>
+                                <div class="text-sm text-gray-600 space-y-2">
+                                    <div class="bg-purple-50 p-2 rounded">
+                                        <strong>月額コスト:</strong> $0（セルフホスト）<br>
+                                        <strong>初期設定:</strong> 1-2週間<br>
+                                        <strong>学習コスト:</strong> 低
+                                    </div>
+                                    <div class="bg-green-50 p-2 rounded">
+                                        <strong>適用場面:</strong><br>
+                                        MVP開発、コスト最小化、迅速なプロトタイピング
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- LangGraph -->
                     <div class="section-card bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center justify-between mb-4">
@@ -464,96 +540,126 @@
                 </h2>
                 
                 <div class="space-y-6">
-                    <!-- Phase 0: IBM環境推奨 -->
-                    <div class="border-l-4 border-blue-600 pl-6 bg-blue-50 rounded-r-lg py-4">
-                        <h3 class="text-lg font-semibold text-blue-800 mb-2">🏢 IBM環境推奨パス: watsonx.orchestrate（1-2ヶ月）</h3>
+                    <!-- Phase 0: ゼロコスト開始 -->
+                    <div class="border-l-4 border-purple-600 pl-6 bg-purple-50 rounded-r-lg py-4">
+                        <h3 class="text-lg font-semibold text-purple-800 mb-2">💰 Phase 0: ゼロコスト開始（2-4週間）</h3>
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <h4 class="font-medium text-gray-700 mb-2">推奨ソリューション</h4>
-                                <div class="bg-blue-100 p-3 rounded">
-                                    <p class="font-medium">IBM watsonx.orchestrate 単独導入</p>
+                                <div class="bg-purple-100 p-3 rounded">
+                                    <p class="font-medium">Dify (オープンソース) + Google Gemini Flash</p>
                                     <p class="text-sm text-gray-600 mt-1">
-                                        IBMエコシステム内での最適解。94%の成功率を誇るエンタープライズグレードの
-                                        AIエージェント プラットフォームで、迅速且つ安全に導入可能。
+                                        完全無料でAIエージェントを構築・テスト。Google AI Studioの無料ティアで
+                                        基本機能を実装し、市場検証を実施。リスクゼロでの検証。
                                     </p>
                                 </div>
                             </div>
                             <div>
                                 <h4 class="font-medium text-gray-700 mb-2">実装内容</h4>
                                 <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• ノーコードでのエージェント構築（5分で完成）</li>
-                                    <li>• 営業・HR・調達専用プリビルトエージェント</li>
-                                    <li>• 80+エンタープライズアプリとの統合</li>
-                                    <li>• IBM Cloud/オンプレでのセキュア運用</li>
+                                    <li>• Difyを使ったノーコードエージェント構築</li>
+                                    <li>• 基本的なチャット対話機能</li>
+                                    <li>• シンプルな顧客対応自動化</li>
+                                    <li>• 初期ユーザーフィードバック収集</li>
                                 </ul>
                                 <div class="mt-2 text-xs text-gray-500">
-                                    💰 予算: $1,500-3,000/月 | ⏱️ 期間: 3-6週間 | 🔒 エンタープライズ級セキュリティ
+                                    💰 予算: $0/月 | ⏱️ 期間: 2-4週間 | 🎯 目標: コンセプト実証
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Phase 1: MVP -->
-                    <div class="border-l-4 border-green-500 pl-6">
-                        <h3 class="text-lg font-semibold text-green-800 mb-2">Phase 1: MVP（1-2ヶ月）</h3>
+                    <!-- Phase 1: 最小投資 -->
+                    <div class="border-l-4 border-green-600 pl-6 bg-green-50 rounded-r-lg py-4">
+                        <h3 class="text-lg font-semibold text-green-800 mb-2">📈 Phase 1: 最小投資・市場検証（1-2ヶ月）</h3>
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <h4 class="font-medium text-gray-700 mb-2">推奨ソリューション</h4>
-                                <div class="bg-green-50 p-3 rounded">
-                                    <p class="font-medium">HubSpot Breeze + n8n 統合</p>
+                                <div class="bg-green-100 p-3 rounded">
+                                    <p class="font-medium">n8n + OpenAI/Claude API（従量課金）</p>
                                     <p class="text-sm text-gray-600 mt-1">
-                                        迅速な導入と実証を重視。HubSpotの営業・マーケティング機能をベースに、
-                                        n8nで追加のワークフロー自動化を実装。
+                                        Phase 0で実証されたコンセプトを本格的なワークフローに発展。
+                                        最小限の投資で商用レベルの機能を実装。
                                     </p>
                                 </div>
                             </div>
                             <div>
                                 <h4 class="font-medium text-gray-700 mb-2">実装内容</h4>
                                 <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• チャット入力からHubSpot CRMへの自動データ投入</li>
-                                    <li>• 基本的な顧客分析・提案生成</li>
-                                    <li>• 見積作成の半自動化</li>
-                                    <li>• シンプルなペルソナ作成</li>
+                                    <li>• 複数AIプロバイダー統合</li>
+                                    <li>• 基本的な営業・マーケティング自動化</li>
+                                    <li>• 外部ツール連携（CRM、メール等）</li>
+                                    <li>• 初期収益化の検証</li>
                                 </ul>
                                 <div class="mt-2 text-xs text-gray-500">
-                                    💰 予算: $1,000-2,500/月 | ⏱️ 期間: 4-6週間
+                                    💰 予算: $50-200/月 | ⏱️ 期間: 1-2ヶ月 | 🎯 目標: 初期収益化
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Phase 2: 拡張 -->
-                    <div class="border-l-4 border-blue-500 pl-6">
-                        <h3 class="text-lg font-semibold text-blue-800 mb-2">Phase 2: マルチエージェント拡張（3-4ヶ月）</h3>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <h4 class="font-medium text-gray-700 mb-2">推奨ソリューション</h4>
-                                <div class="bg-blue-50 p-3 rounded">
-                                    <p class="font-medium">CrewAI + 既存システム統合</p>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        Phase 1の成功を基に、より高度なマルチエージェント協調システムを構築。
-                                        役割分担による専門性の向上を図る。
-                                    </p>
+                    <!-- Phase 2: 本格展開（2つのパス） -->
+                    <div class="border-l-4 border-orange-600 pl-6 bg-orange-50 rounded-r-lg py-4">
+                        <h3 class="text-lg font-semibold text-orange-800 mb-4">🚀 Phase 2: 本格展開・スケールアップ（2-4ヶ月）</h3>
+                        
+                        <!-- パス A: HubSpot/CrewAI -->
+                        <div class="mb-4 p-3 bg-white rounded border">
+                            <h4 class="font-medium text-gray-700 mb-2">パス A: マーケティング重視</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <div class="bg-orange-100 p-3 rounded">
+                                        <p class="font-medium">HubSpot Breeze + CrewAI</p>
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            営業・マーケティングに特化した本格的なエージェント システム。
+                                            複数の専門エージェントが協調して業務を自動化。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <ul class="text-sm text-gray-600 space-y-1">
+                                        <li>• 専門化されたマルチエージェント</li>
+                                        <li>• 高度な営業・マーケティング自動化</li>
+                                        <li>• CRM/SFA統合</li>
+                                        <li>• ROI最適化</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs text-gray-500">
+                                        💰 予算: $500-1500/月 | 🎯 目標: 本格的な収益化
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <h4 class="font-medium text-gray-700 mb-2">実装内容</h4>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• 営業エージェント、マーケエージェントの専門化</li>
-                                    <li>• 社内DB・外部情報の高度な検索統合</li>
-                                    <li>• 競合分析エージェントの追加</li>
-                                    <li>• ペルソナインタビュー機能の高度化</li>
-                                </ul>
-                                <div class="mt-2 text-xs text-gray-500">
-                                    💰 予算: $2,000-4,000/月 | ⏱️ 期間: 8-12週間
+                        </div>
+
+                        <!-- パス B: IBM環境 -->
+                        <div class="p-3 bg-blue-100 rounded border border-blue-200">
+                            <h4 class="font-medium text-blue-800 mb-2">🏢 パス B: IBM環境（推奨）</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <div class="bg-blue-200 p-3 rounded">
+                                        <p class="font-medium text-blue-900">IBM watsonx.orchestrate</p>
+                                        <p class="text-sm text-blue-800 mt-1">
+                                            IBMエコシステム内での最適解。94%の成功率を誇るエンタープライズ
+                                            グレードのプラットフォームで安全・確実にスケールアップ。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <ul class="text-sm text-blue-800 space-y-1">
+                                        <li>• ノーコード5分エージェント構築</li>
+                                        <li>• 80+エンタープライズアプリ統合</li>
+                                        <li>• 企業級セキュリティ・ガバナンス</li>
+                                        <li>• IBM Cloud/オンプレ対応</li>
+                                    </ul>
+                                    <div class="mt-2 text-xs text-blue-700">
+                                        💰 予算: $1500-3000/月 | 🎯 目標: エンタープライズ展開
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Phase 3: 最適化 -->
+                    <!-- Phase 3: 最適化・カスタマイズ -->
                     <div class="border-l-4 border-purple-500 pl-6">
-                        <h3 class="text-lg font-semibold text-purple-800 mb-2">Phase 3: 複雑ワークフロー（6ヶ月+）</h3>
+                        <h3 class="text-lg font-semibold text-purple-800 mb-2">🔧 Phase 3: 最適化・カスタマイズ（6ヶ月+）</h3>
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <h4 class="font-medium text-gray-700 mb-2">推奨ソリューション</h4>
@@ -579,9 +685,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
         <!-- 結論と次のステップ -->
         <section class="mb-8">
@@ -594,21 +697,20 @@
                     <div>
                         <h3 class="text-lg font-semibold mb-3">最終推奨</h3>
                         <div class="bg-white/10 rounded-lg p-4 mb-3">
-                            <p class="text-green-100 mb-2"><strong>🏢 IBM環境の場合:</strong></p>
+                            <p class="text-green-100 mb-2"><strong>💰 ゼロコスト開始（推奨）:</strong></p>
                             <ul class="space-y-1 text-green-100 text-sm">
-                                <li>• IBM watsonx.orchestrate 単独導入</li>
-                                <li>• 94%成功率のエンタープライズ実績</li>
-                                <li>• ノーコード5分エージェント構築</li>
-                                <li>• 月額予算: $1,500-3,000</li>
+                                <li>• Dify (オープンソース) + Google Gemini Flash</li>
+                                <li>• 完全無料でリスクゼロの検証</li>
+                                <li>• 2-4週間でMVP構築・市場検証</li>
+                                <li>• 月額予算: $0</li>
                             </ul>
                         </div>
-                        <div class="bg-white/10 rounded-lg p-4">
-                            <p class="text-green-100 mb-2"><strong>その他環境の場合:</strong></p>
+                        <div class="bg-white/10 rounded-lg p-4 mb-3">
+                            <p class="text-green-100 mb-2"><strong>📈 収益化開始後:</strong></p>
                             <ul class="space-y-1 text-green-100 text-sm">
-                                <li>• HubSpot Breeze で営業・マーケティング基盤構築</li>
-                                <li>• n8n で追加ワークフロー自動化</li>
-                                <li>• OpenAI/Claude API統合でAI機能強化</li>
-                                <li>• 月額予算: $1,500-2,500</li>
+                                <li>• n8n + 従量課金API （$50-200/月）</li>
+                                <li>• HubSpot/CrewAI 本格展開 （$500-1500/月）</li>
+                                <li>• IBM watsonx.orchestrate 企業展開 （$1500-3000/月）</li>
                             </ul>
                         </div>
                     </div>
