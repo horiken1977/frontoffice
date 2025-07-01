@@ -47,7 +47,9 @@
                     <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
                     <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
                     <a href="chat.html" class="text-gray-800 font-medium border-b-2 border-blue-600">チャット入力</a>
+                    <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">社内データ検索</a>
                     <a href="ai-agent-research.html" class="text-blue-600 hover:text-blue-800 font-medium">AI調査レポート</a>
+                    <a href="feedback-dashboard.html" class="text-blue-600 hover:text-blue-800 font-medium">フィードバック</a>
                 </div>
             </div>
         </div>
@@ -232,17 +234,100 @@
             }
 
             function sendFeedback() {
-                // フィードバック送信機能
-                const messageInput = document.getElementById('messageInput');
-                const feedbackMessage = 'フィードバック';
+                // フィードバック送信フォームを表示
+                const feedbackModal = createFeedbackModal();
+                document.body.appendChild(feedbackModal);
+            }
+
+            function createFeedbackModal() {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">📝 フィードバック送信</h3>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">カテゴリ</label>
+                            <select id="feedbackCategory" class="w-full px-3 py-2 border rounded-lg">
+                                <option value="">カテゴリを選択...</option>
+                                <option value="ui">画面・操作性</option>
+                                <option value="feature">新機能要望</option>
+                                <option value="bug">不具合報告</option>
+                                <option value="search">検索機能</option>
+                                <option value="chat">チャット機能</option>
+                                <option value="other">その他</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">フィードバック内容</label>
+                            <textarea id="feedbackContent" rows="4" class="w-full px-3 py-2 border rounded-lg" placeholder="具体的な内容をお聞かせください..."></textarea>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button onclick="submitFeedback()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                送信
+                            </button>
+                            <button onclick="closeFeedbackModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg transition-colors">
+                                キャンセル
+                            </button>
+                        </div>
+                        
+                        <div class="mt-3 text-xs text-gray-500">
+                            フィードバックは管理画面で確認できます。GitHubの課題としても作成されます。
+                        </div>
+                    </div>
+                `;
+                return modal;
+            }
+
+            function submitFeedback() {
+                const category = document.getElementById('feedbackCategory').value;
+                const content = document.getElementById('feedbackContent').value.trim();
                 
-                // メッセージ入力欄にフィードバックテキストを設定
-                messageInput.value = feedbackMessage;
-                messageInput.dispatchEvent(new Event('input'));
-                messageInput.focus();
+                if (!category || !content) {
+                    alert('カテゴリと内容を入力してください。');
+                    return;
+                }
                 
-                // AIからのフィードバックフォーム応答を待つ
-                // （実際のフィードバック機能はDifyのプロンプトで処理される）
+                // フィードバックシステムに記録
+                if (typeof feedbackSystem !== 'undefined') {
+                    feedbackSystem.submitImprovement(category, content, 'chat');
+                    
+                    // 成功メッセージ
+                    alert('フィードバックを送信しました！\n\n管理画面（フィードバック）でご確認いただけます。\nありがとうございます！');
+                    
+                    // GitHubにも送信（オプション）
+                    openGitHubIssue(category, content);
+                } else {
+                    alert('フィードバックシステムが利用できません。');
+                }
+                
+                closeFeedbackModal();
+            }
+
+            function openGitHubIssue(category, content) {
+                const categoryLabels = {
+                    'ui': '画面・操作性',
+                    'feature': '新機能要望', 
+                    'bug': '不具合報告',
+                    'search': '検索機能',
+                    'chat': 'チャット機能',
+                    'other': 'その他'
+                };
+                
+                const title = `[${categoryLabels[category]}] フィードバック`;
+                const body = `## フィードバック内容\n\n${content}\n\n## 送信情報\n- ページ: チャット画面\n- 日時: ${new Date().toLocaleString('ja-JP')}\n- ブラウザ: ${navigator.userAgent}`;
+                
+                const githubUrl = `https://github.com/horiken1977/frontoffice/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+                window.open(githubUrl, '_blank');
+            }
+
+            function closeFeedbackModal() {
+                const modal = document.querySelector('.fixed.inset-0');
+                if (modal) {
+                    modal.remove();
+                }
             }
 
             // 下書き保存機能
@@ -460,6 +545,10 @@
         </script>
     </div>
 
+    <!-- フィードバックシステム -->
+    <script src="feedback-system.js"></script>
+    <!-- Dify Knowledge Base統合 -->
+    <script src="dify-knowledge-integration.js"></script>
     <!-- Dify API統合スクリプト（インライン版） -->
     <script>
         // Dify API設定
@@ -528,7 +617,24 @@
                 this.charCount = document.getElementById('charCount');
                 this.quickActions = document.querySelectorAll('.quick-action');
                 
+                // Knowledge Base検索システムを初期化
+                this.knowledgeSearch = null;
+                this.initializeKnowledgeSearch();
+                
                 this.initializeEventListeners();
+            }
+
+            initializeKnowledgeSearch() {
+                try {
+                    if (typeof DifyKnowledgeSearch !== 'undefined') {
+                        this.knowledgeSearch = new DifyKnowledgeSearch({
+                            apiKey: DIFY_CONFIG.apiKey
+                        });
+                        console.log('✅ Knowledge Base検索機能が有効になりました');
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Knowledge Base検索機能の初期化に失敗:', error);
+                }
             }
 
             initializeEventListeners() {
@@ -590,6 +696,11 @@
                 const message = this.messageInput.value.trim();
                 if (!message) return;
 
+                // フィードバックシステムに記録
+                if (typeof feedbackSystem !== 'undefined') {
+                    feedbackSystem.recordSearchQuery(message, 'chat');
+                }
+
                 this.addMessage('user', message);
                 this.messageInput.value = '';
                 this.messageInput.dispatchEvent(new Event('input'));
@@ -600,9 +711,23 @@
                 const typingIndicator = this.addTypingIndicator();
 
                 try {
-                    const response = await this.difyClient.sendMessage(message);
+                    // Knowledge Base検索とチャット応答を並列実行
+                    const [knowledgeResult, chatResponse] = await Promise.allSettled([
+                        this.searchKnowledgeBase(message),
+                        this.difyClient.sendMessage(message)
+                    ]);
+
                     typingIndicator.remove();
-                    this.addMessage('ai', response.answer);
+
+                    // 統合応答を生成
+                    const integratedResponse = this.integrateResponses(
+                        message,
+                        knowledgeResult.status === 'fulfilled' ? knowledgeResult.value : null,
+                        chatResponse.status === 'fulfilled' ? chatResponse.value : null
+                    );
+
+                    this.addMessage('ai', integratedResponse);
+
                 } catch (error) {
                     console.error('Failed to send message:', error);
                     typingIndicator.remove();
@@ -611,6 +736,42 @@
                     this.sendButton.disabled = false;
                     this.sendButton.textContent = '送信';
                 }
+            }
+
+            async searchKnowledgeBase(query) {
+                if (!this.knowledgeSearch) {
+                    return null;
+                }
+
+                try {
+                    console.log('🔍 Knowledge Base検索実行:', query);
+                    const result = await this.knowledgeSearch.searchKnowledge(query);
+                    return result;
+                } catch (error) {
+                    console.warn('Knowledge Base検索エラー:', error);
+                    return null;
+                }
+            }
+
+            integrateResponses(originalQuery, knowledgeResult, chatResponse) {
+                let response = '';
+
+                // チャット応答をベースにする
+                if (chatResponse && chatResponse.answer) {
+                    response = chatResponse.answer;
+                }
+
+                // Knowledge Base検索結果があれば統合
+                if (knowledgeResult && knowledgeResult.success && knowledgeResult.answer) {
+                    // 社内データが見つかった場合は、それを優先して表示
+                    if (!knowledgeResult.answer.includes('データが見つかりませんでした') && 
+                        !knowledgeResult.answer.includes('社内データベースにアクセスできません')) {
+                        
+                        response = `📊 **社内データ検索結果:**\n\n${knowledgeResult.answer}\n\n---\n\n💡 **AI分析:**\n\n${response}`;
+                    }
+                }
+
+                return response || 'エラーが発生しました。もう一度お試しください。';
             }
 
             addMessage(sender, text) {
