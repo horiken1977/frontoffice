@@ -82,7 +82,13 @@
                         📋 顧客情報テンプレート
                     </button>
                 </div>
-                <div class="flex justify-end">
+                <div class="flex justify-end space-x-2">
+                    <button onclick="exportChatHistory()" class="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                        📊 履歴エクスポート
+                    </button>
+                    <button onclick="clearChatHistory()" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                        🗑️ 履歴削除
+                    </button>
                     <button onclick="sendFeedback()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
                         💬 フィードバックはこちら
                     </button>
@@ -359,6 +365,90 @@
                 });
             }
 
+            // チャット履歴管理機能
+            function saveChatHistory() {
+                const messages = document.querySelectorAll('#chatMessages .message');
+                const history = [];
+                
+                messages.forEach(message => {
+                    const isAI = message.querySelector('.bg-blue-500');
+                    const sender = isAI ? 'AI' : 'ユーザー';
+                    const contentDiv = message.querySelector('div[class*="bg-gray-100"], div[class*="bg-blue-50"]');
+                    if (contentDiv) {
+                        const content = contentDiv.textContent.trim();
+                        const timestamp = new Date().toLocaleString('ja-JP');
+                        
+                        // 初期メッセージは除外
+                        if (!content.includes('こんにちは！フロントオフィス')) {
+                            history.push({
+                                timestamp: timestamp,
+                                sender: sender,
+                                content: content
+                            });
+                        }
+                    }
+                });
+                
+                localStorage.setItem('chatHistory', JSON.stringify(history));
+            }
+
+            function exportChatHistory() {
+                const history = localStorage.getItem('chatHistory');
+                if (!history) {
+                    alert('エクスポートする履歴がありません');
+                    return;
+                }
+                
+                const parsedHistory = JSON.parse(history);
+                if (parsedHistory.length === 0) {
+                    alert('エクスポートする履歴がありません');
+                    return;
+                }
+                
+                // CSV形式でエクスポート
+                let csvContent = '\uFEFF'; // BOM for UTF-8
+                csvContent += '日時,発信者,チャット内容\n';
+                
+                parsedHistory.forEach(item => {
+                    const csvRow = [
+                        `"${item.timestamp}"`,
+                        `"${item.sender}"`,
+                        `"${item.content.replace(/"/g, '""').replace(/\n/g, ' ')}"`
+                    ].join(',');
+                    csvContent += csvRow + '\n';
+                });
+                
+                // ファイルダウンロード
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `chat_history_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                alert('チャット履歴をCSVファイルでダウンロードしました');
+            }
+
+            function clearChatHistory() {
+                if (confirm('チャット履歴を削除しますか？\n\nこの操作は取り消せません。')) {
+                    localStorage.removeItem('chatHistory');
+                    
+                    // 画面からも削除（初期メッセージ以外）
+                    const chatMessages = document.getElementById('chatMessages');
+                    const messages = chatMessages.querySelectorAll('.message');
+                    
+                    // 最初のメッセージ（初期メッセージ）以外を削除
+                    for (let i = 1; i < messages.length; i++) {
+                        messages[i].remove();
+                    }
+                    
+                    alert('チャット履歴を削除しました');
+                }
+            }
+
             // ページ読み込み時に下書きボタンの状態を更新
             document.addEventListener('DOMContentLoaded', () => {
                 updateDraftButtons();
@@ -523,6 +613,7 @@
             addMessage(sender, text) {
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'message flex items-start space-x-3';
+                const timestamp = new Date().toLocaleString('ja-JP');
                 
                 if (sender === 'user') {
                     messageDiv.innerHTML = `
@@ -531,6 +622,7 @@
                         </div>
                         <div class="bg-gray-100 rounded-lg px-4 py-3 max-w-md">
                             <p class="text-gray-800 whitespace-pre-wrap">${this.escapeHtml(text)}</p>
+                            <p class="text-xs text-gray-500 mt-2">${timestamp}</p>
                         </div>
                     `;
                 } else {
@@ -540,12 +632,27 @@
                         </div>
                         <div class="bg-blue-50 rounded-lg px-4 py-3 max-w-md">
                             <div class="text-gray-800 whitespace-pre-wrap">${this.formatAIResponse(text)}</div>
+                            <p class="text-xs text-gray-500 mt-2">${timestamp}</p>
                         </div>
                     `;
                 }
 
                 this.chatMessages.appendChild(messageDiv);
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                
+                // 履歴を保存
+                this.saveChatMessage(sender === 'user' ? 'ユーザー' : 'AI', text, timestamp);
+            }
+            
+            saveChatMessage(sender, content, timestamp) {
+                const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+                history.push({
+                    timestamp: timestamp,
+                    sender: sender,
+                    content: content
+                });
+                localStorage.setItem('chatHistory', JSON.stringify(history));
+            }
             }
 
             addTypingIndicator() {
