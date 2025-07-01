@@ -38,24 +38,34 @@
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- ナビゲーション -->
-    <nav class="bg-white shadow-sm border-b">
-        <div class="container mx-auto px-4 py-3">
+    <div class="container mx-auto px-4 py-8">
+        <!-- ナビゲーション -->
+        <nav class="bg-white shadow-sm border-b mb-4 -mx-4 px-4 py-3">
             <div class="flex items-center justify-between">
                 <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
                 <div class="space-x-4">
-                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
-                    <a href="plan.html" class="text-gray-800 font-medium border-b-2 border-blue-600">開発計画書</a>
-                    <a href="test-specification.html" class="text-blue-600 hover:text-blue-800 font-medium">テスト仕様書</a>
-                    <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
-                    <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">社内データ検索</a>
-                    <a href="feedback-dashboard.html" class="text-blue-600 hover:text-blue-800 font-medium">フィードバック</a>
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">🏠 ホーム</a>
+                    <a href="plan.html" class="text-gray-800 font-medium border-b-2 border-blue-600">📋 開発計画書</a>
+                    <a href="test-specification.html" class="text-blue-600 hover:text-blue-800 font-medium">🧪 テスト仕様書</a>
+                    <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">💬 チャット入力</a>
+                    <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">📊 社内データ検索</a>
+                    <a href="feedback-dashboard.html" class="text-blue-600 hover:text-blue-800 font-medium">📝 フィードバック</a>
                 </div>
             </div>
-        </div>
-    </nav>
-
-    <div class="container mx-auto px-4 py-8">
+        </nav>
+        
+        <!-- パンくずリスト -->
+        <nav class="mb-6 -mx-4 px-4">
+            <ol class="flex items-center space-x-2 text-sm text-gray-600">
+                <li class="flex items-center">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800">🏠 ホーム</a>
+                </li>
+                <li class="flex items-center">
+                    <span class="mx-2">/</span>
+                    <span class="text-gray-800 font-medium">📋 開発計画書</span>
+                </li>
+            </ol>
+        </nav>
         <!-- ヘッダー -->
         <header class="mb-8 fade-in-up">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">開発計画書</h1>
