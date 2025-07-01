@@ -122,12 +122,23 @@
                             id="messageInput" 
                             placeholder="メッセージを入力してください... (Enter: 送信 / Shift+Enter: 改行)"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            rows="3"
-                            maxlength="1000"
+                            rows="5"
+                            maxlength="5000"
                         ></textarea>
                         <div class="flex justify-between text-xs text-gray-500 mt-1">
-                            <span class="text-gray-400">💡 Enter: 送信 / Shift+Enter: 改行 <span id="compositionStatus" class="text-red-500"></span></span>
-                            <span><span id="charCount">0</span>/1000文字</span>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-400">💡 Enter: 送信 / Shift+Enter: 改行 <span id="compositionStatus" class="text-red-500"></span></span>
+                                <button onclick="saveDraft()" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-2 py-1 rounded text-xs transition-colors">
+                                    💾 下書き保存
+                                </button>
+                                <button onclick="loadDraft()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded text-xs transition-colors" id="loadDraftBtn" style="display: none;">
+                                    📄 下書き読込
+                                </button>
+                                <button onclick="clearDraft()" class="bg-red-100 hover:bg-red-200 text-red-700 px-2 py-1 rounded text-xs transition-colors" id="clearDraftBtn" style="display: none;">
+                                    🗑️ 下書き削除
+                                </button>
+                            </div>
+                            <span><span id="charCount">0</span>/5000文字</span>
                         </div>
                     </div>
                     <button 
@@ -224,6 +235,135 @@
                 // AIからのフィードバックフォーム応答を待つ
                 // （実際のフィードバック機能はDifyのプロンプトで処理される）
             }
+
+            // 下書き保存機能
+            function saveDraft() {
+                const messageInput = document.getElementById('messageInput');
+                const content = messageInput.value.trim();
+                
+                if (content.length === 0) {
+                    alert('保存する内容がありません');
+                    return;
+                }
+                
+                // ローカルストレージに保存
+                const timestamp = new Date().toLocaleString('ja-JP');
+                const draftData = {
+                    content: content,
+                    timestamp: timestamp,
+                    charCount: content.length
+                };
+                
+                localStorage.setItem('chatDraft', JSON.stringify(draftData));
+                
+                // ボタンの表示状態を更新
+                updateDraftButtons();
+                
+                // 保存完了の通知
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ 保存完了';
+                button.style.backgroundColor = '#dcfce7';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+            }
+
+            // 下書き読み込み機能
+            function loadDraft() {
+                const draftData = JSON.parse(localStorage.getItem('chatDraft'));
+                if (!draftData) {
+                    alert('保存された下書きがありません');
+                    return;
+                }
+                
+                const messageInput = document.getElementById('messageInput');
+                const confirmMessage = `下書きを読み込みますか？\n\n保存日時: ${draftData.timestamp}\n文字数: ${draftData.charCount}文字\n\n現在の入力内容は上書きされます。`;
+                
+                if (confirm(confirmMessage)) {
+                    messageInput.value = draftData.content;
+                    messageInput.dispatchEvent(new Event('input'));
+                    messageInput.focus();
+                    
+                    // 読み込み完了の通知
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = '✅ 読込完了';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 2000);
+                }
+            }
+
+            // 下書き削除機能
+            function clearDraft() {
+                const draftData = JSON.parse(localStorage.getItem('chatDraft'));
+                if (!draftData) {
+                    alert('削除する下書きがありません');
+                    return;
+                }
+                
+                if (confirm(`下書きを削除しますか？\n\n保存日時: ${draftData.timestamp}\n文字数: ${draftData.charCount}文字\n\nこの操作は取り消せません。`)) {
+                    localStorage.removeItem('chatDraft');
+                    updateDraftButtons();
+                    
+                    // 削除完了の通知
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = '✅ 削除完了';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        updateDraftButtons();
+                    }, 2000);
+                }
+            }
+
+            // 下書きボタンの表示状態を更新
+            function updateDraftButtons() {
+                const loadBtn = document.getElementById('loadDraftBtn');
+                const clearBtn = document.getElementById('clearDraftBtn');
+                const hasDraft = localStorage.getItem('chatDraft') !== null;
+                
+                loadBtn.style.display = hasDraft ? 'inline-block' : 'none';
+                clearBtn.style.display = hasDraft ? 'inline-block' : 'none';
+            }
+
+            // 自動保存機能（1分ごと）
+            function setupAutoSave() {
+                const messageInput = document.getElementById('messageInput');
+                let autoSaveInterval;
+
+                messageInput.addEventListener('input', () => {
+                    // 既存の自動保存タイマーをクリア
+                    clearTimeout(autoSaveInterval);
+                    
+                    // 入力が止まって30秒後に自動保存
+                    autoSaveInterval = setTimeout(() => {
+                        const content = messageInput.value.trim();
+                        if (content.length > 50) { // 50文字以上の場合のみ自動保存
+                            const timestamp = new Date().toLocaleString('ja-JP');
+                            const draftData = {
+                                content: content,
+                                timestamp: timestamp + ' (自動保存)',
+                                charCount: content.length
+                            };
+                            localStorage.setItem('chatDraft', JSON.stringify(draftData));
+                            updateDraftButtons();
+                            console.log('📝 自動保存完了');
+                        }
+                    }, 30000); // 30秒
+                });
+            }
+
+            // ページ読み込み時に下書きボタンの状態を更新
+            document.addEventListener('DOMContentLoaded', () => {
+                updateDraftButtons();
+                setupAutoSave();
+            });
         </script>
     </div>
 
