@@ -453,32 +453,7 @@
                 });
             }
 
-            // チャット履歴管理機能
-            function saveChatHistory() {
-                const messages = document.querySelectorAll('#chatMessages .message');
-                const history = [];
-                
-                messages.forEach(message => {
-                    const isAI = message.querySelector('.bg-blue-500');
-                    const sender = isAI ? 'AI' : 'ユーザー';
-                    const contentDiv = message.querySelector('div[class*="bg-gray-100"], div[class*="bg-blue-50"]');
-                    if (contentDiv) {
-                        const content = contentDiv.textContent.trim();
-                        const timestamp = new Date().toLocaleString('ja-JP');
-                        
-                        // 初期メッセージは除外
-                        if (!content.includes('こんにちは！フロントオフィス')) {
-                            history.push({
-                                timestamp: timestamp,
-                                sender: sender,
-                                content: content
-                            });
-                        }
-                    }
-                });
-                
-                localStorage.setItem('chatHistory', JSON.stringify(history));
-            }
+            // 旧式の履歴保存機能は不要（リアルタイム保存に変更済み）
 
             function exportChatHistory() {
                 const history = localStorage.getItem('chatHistory');
@@ -517,11 +492,19 @@
                 link.click();
                 document.body.removeChild(link);
                 
-                alert('チャット履歴をCSVファイルでダウンロードしました');
+                alert(`チャット履歴をCSVファイルでダウンロードしました\n件数: ${parsedHistory.length}件`);
             }
 
             function clearChatHistory() {
-                if (confirm('チャット履歴を削除しますか？\n\nこの操作は取り消せません。')) {
+                const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+                const historyCount = history.length;
+                
+                if (historyCount === 0) {
+                    alert('削除する履歴がありません');
+                    return;
+                }
+                
+                if (confirm(`チャット履歴を削除しますか？\n\n件数: ${historyCount}件\nこの操作は取り消せません。`)) {
                     localStorage.removeItem('chatHistory');
                     
                     // 画面からも削除（初期メッセージ以外）
@@ -533,7 +516,7 @@
                         messages[i].remove();
                     }
                     
-                    alert('チャット履歴を削除しました');
+                    alert(`チャット履歴を削除しました\n削除件数: ${historyCount}件`);
                 }
             }
 
@@ -622,6 +605,7 @@
                 this.initializeKnowledgeSearch();
                 
                 this.initializeEventListeners();
+                this.loadChatHistory();
             }
 
             initializeKnowledgeSearch() {
@@ -804,8 +788,10 @@
                 this.chatMessages.appendChild(messageDiv);
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
                 
-                // 履歴を保存
-                this.saveChatMessage(sender === 'user' ? 'ユーザー' : 'AI', text, timestamp);
+                // 履歴をリアルタイムで保存（初期メッセージは除外）
+                if (!text.includes('こんにちは！フロントオフィス業務をサポートする')) {
+                    this.saveChatMessage(sender === 'user' ? 'ユーザー' : 'AI', text, timestamp);
+                }
             }
             
             saveChatMessage(sender, content, timestamp) {
@@ -816,6 +802,47 @@
                     content: content
                 });
                 localStorage.setItem('chatHistory', JSON.stringify(history));
+            }
+
+            loadChatHistory() {
+                const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+                
+                // 既存の初期メッセージの後に履歴を復元
+                if (history.length > 0) {
+                    console.log(`💾 チャット履歴を復元中... ${history.length}件`);
+                    
+                    history.forEach(item => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'message flex items-start space-x-3';
+                        
+                        if (item.sender === 'ユーザー') {
+                            messageDiv.innerHTML = `
+                                <div class="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                                    You
+                                </div>
+                                <div class="bg-gray-100 rounded-lg px-4 py-3 max-w-md">
+                                    <p class="text-gray-800 whitespace-pre-wrap">${this.escapeHtml(item.content)}</p>
+                                    <p class="text-xs text-gray-500 mt-2">${item.timestamp}</p>
+                                </div>
+                            `;
+                        } else {
+                            messageDiv.innerHTML = `
+                                <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                                    AI
+                                </div>
+                                <div class="bg-blue-50 rounded-lg px-4 py-3 max-w-md">
+                                    <div class="text-gray-800 whitespace-pre-wrap">${this.formatAIResponse(item.content)}</div>
+                                    <p class="text-xs text-gray-500 mt-2">${item.timestamp}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        this.chatMessages.appendChild(messageDiv);
+                    });
+                    
+                    this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                    console.log('✅ チャット履歴の復元が完了しました');
+                }
             }
 
             addTypingIndicator() {
