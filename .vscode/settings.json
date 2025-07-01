@@ -1,0 +1,17 @@
+{
+    "git.enabled": true,
+    "git.path": "/usr/bin/git",
+    "git.autorefresh": true,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.enableStatusBarSync": true,
+    "scm.diffDecorations": "all",
+    "scm.alwaysShowProviders": true,
+    "terminal.integrated.shell.osx": "/bin/zsh",
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true
+    }
+}
