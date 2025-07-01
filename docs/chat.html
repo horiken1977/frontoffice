@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>チャット入力 - フロントオフィス生産性向上アプリ v2.0</title>
+    <title>チャット入力 - フロントオフィス生産性向上アプリ v2.1</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .chat-container {
@@ -93,7 +96,7 @@
                             maxlength="1000"
                         ></textarea>
                         <div class="flex justify-between text-xs text-gray-500 mt-1">
-                            <span class="text-gray-400">💡 Enter: 送信 / Shift+Enter: 改行</span>
+                            <span class="text-gray-400">💡 Enter: 送信 / Shift+Enter: 改行 <span id="compositionStatus" class="text-red-500"></span></span>
                             <span><span id="charCount">0</span>/1000文字</span>
                         </div>
                     </div>
@@ -281,27 +284,37 @@
 
                 // 日本語入力対応: compositionstart/end で入力状態を追跡
                 let isComposing = false;
+                const compositionStatus = document.getElementById('compositionStatus');
                 
                 this.messageInput.addEventListener('compositionstart', () => {
                     isComposing = true;
+                    compositionStatus.textContent = '[変換中]';
+                    console.log('🎌 日本語入力開始');
                 });
                 
                 this.messageInput.addEventListener('compositionend', () => {
                     isComposing = false;
+                    compositionStatus.textContent = '';
+                    console.log('✅ 日本語入力確定');
                 });
 
                 this.messageInput.addEventListener('keydown', (e) => {
+                    console.log('⌨️ キー押下:', e.key, 'isComposing:', isComposing, 'shiftKey:', e.shiftKey);
+                    
                     // 日本語入力中（変換中）は送信を無効化
                     if (isComposing) {
+                        console.log('🚫 変換中のため送信をスキップ');
                         return;
                     }
                     
                     if (e.key === 'Enter') {
                         if (e.shiftKey) {
                             // Shift+Enter: 改行（デフォルト動作を許可）
+                            console.log('📝 Shift+Enter: 改行');
                             return;
                         } else {
                             // Enter単体: 送信
+                            console.log('🚀 Enter: 送信実行');
                             e.preventDefault();
                             if (!this.sendButton.disabled) {
                                 this.sendMessage();
