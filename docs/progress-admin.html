@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進捗管理 - フロントオフィス生産性向上アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="progress-sync.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
+                <div class="space-x-4">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
+                    <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
+                    <a href="test-specification.html" class="text-blue-600 hover:text-blue-800 font-medium">テスト仕様書</a>
+                    <a href="progress-admin.html" class="text-gray-800 font-medium border-b-2 border-blue-600">進捗管理</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- ヘッダー -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">進捗管理システム</h1>
+            <p class="text-xl text-gray-600 mb-4">プロジェクト進捗データの一元管理</p>
+        </header>
+
+        <!-- アクションパネル -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">クイックアクション</h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <button onclick="markFeatureComplete()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg font-medium transition-colors">
+                    ✅ 機能完了マーク
+                </button>
+                <button onclick="updatePhaseProgress()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-lg font-medium transition-colors">
+                    📊 フェーズ進捗更新
+                </button>
+                <button onclick="syncAllPages()" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-3 rounded-lg font-medium transition-colors">
+                    🔄 全ページ同期
+                </button>
+                <button onclick="exportProgressData()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-3 rounded-lg font-medium transition-colors">
+                    📁 データエクスポート
+                </button>
+            </div>
+        </div>
+
+        <!-- 機能進捗編集 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">機能進捗編集</h2>
+            <div id="feature-list" class="space-y-4">
+                <!-- 動的に生成される -->
+            </div>
+        </div>
+
+        <!-- フェーズ管理 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">フェーズ管理</h2>
+            <div id="phase-list" class="space-y-4">
+                <!-- 動的に生成される -->
+            </div>
+        </div>
+
+        <!-- 同期状況 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">同期状況</h2>
+            <div id="sync-status" class="space-y-2">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <span>ダッシュボード (index.html)</span>
+                    <span class="text-green-600">✅ 同期済み</span>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <span>開発計画書 (plan.html)</span>
+                    <span class="text-green-600">✅ 同期済み</span>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <span>テスト仕様書 (test-specification.html)</span>
+                    <span class="text-green-600">✅ 同期済み</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ProgressAdmin {
+            constructor() {
+                this.progressData = null;
+                this.init();
+            }
+
+            async init() {
+                // プログレスデータを読み込み
+                if (window.progressSync) {
+                    await window.progressSync.loadProgressData();
+                    this.progressData = window.progressSync.progressData;
+                    this.renderFeatureList();
+                    this.renderPhaseList();
+                }
+            }
+
+            renderFeatureList() {
+                const container = document.getElementById('feature-list');
+                if (!this.progressData) return;
+
+                container.innerHTML = this.progressData.features.map(feature => `
+                    <div class="p-4 border rounded-lg ${feature.status === 'completed' ? 'bg-green-50' : feature.status === 'in_progress' ? 'bg-blue-50' : 'bg-gray-50'}">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold">${feature.name}</h3>
+                                <p class="text-sm text-gray-600">${feature.description}</p>
+                                <span class="text-xs text-gray-500">${feature.phase} | ${feature.category}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <select onchange="updateFeatureStatus('${feature.id}', this.value)" class="px-2 py-1 border rounded text-sm">
+                                    <option value="pending" ${feature.status === 'pending' ? 'selected' : ''}>未実装</option>
+                                    <option value="in_progress" ${feature.status === 'in_progress' ? 'selected' : ''}>進行中</option>
+                                    <option value="completed" ${feature.status === 'completed' ? 'selected' : ''}>完了</option>
+                                </select>
+                                <input type="range" min="0" max="100" value="${feature.progress}" 
+                                       onchange="updateFeatureProgress('${feature.id}', this.value)"
+                                       class="w-20">
+                                <span class="text-sm font-medium w-12">${feature.progress}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderPhaseList() {
+                const container = document.getElementById('phase-list');
+                if (!this.progressData) return;
+
+                container.innerHTML = this.progressData.phases.map(phase => `
+                    <div class="p-4 border rounded-lg ${phase.status === 'completed' ? 'bg-green-50' : phase.status === 'in_progress' ? 'bg-blue-50' : 'bg-gray-50'}">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold">${phase.name}</h3>
+                                <p class="text-sm text-gray-600">${phase.description}</p>
+                                <span class="text-xs text-gray-500">予算: ${phase.budget}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <select onchange="updatePhaseStatus('${phase.id}', this.value)" class="px-2 py-1 border rounded text-sm">
+                                    <option value="pending" ${phase.status === 'pending' ? 'selected' : ''}>予定</option>
+                                    <option value="in_progress" ${phase.status === 'in_progress' ? 'selected' : ''}>進行中</option>
+                                    <option value="completed" ${phase.status === 'completed' ? 'selected' : ''}>完了</option>
+                                </select>
+                                <span class="text-sm font-medium">${window.progressSync?.calculatePhaseProgress(phase.id) || phase.progress}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // グローバル関数
+        function updateFeatureStatus(featureId, status) {
+            if (!window.progressSync?.progressData) return;
+            
+            const feature = window.progressSync.progressData.features.find(f => f.id === featureId);
+            if (feature) {
+                feature.status = status;
+                if (status === 'completed') feature.progress = 100;
+                if (status === 'pending') feature.progress = 0;
+                
+                console.log(`機能 ${feature.name} のステータスを ${status} に更新`);
+                autoSyncPages();
+            }
+        }
+
+        function updateFeatureProgress(featureId, progress) {
+            if (!window.progressSync?.progressData) return;
+            
+            const feature = window.progressSync.progressData.features.find(f => f.id === featureId);
+            if (feature) {
+                feature.progress = parseInt(progress);
+                if (progress == 100) feature.status = 'completed';
+                else if (progress > 0) feature.status = 'in_progress';
+                else feature.status = 'pending';
+                
+                console.log(`機能 ${feature.name} の進捗を ${progress}% に更新`);
+                autoSyncPages();
+            }
+        }
+
+        function updatePhaseStatus(phaseId, status) {
+            if (!window.progressSync?.progressData) return;
+            
+            const phase = window.progressSync.progressData.phases.find(p => p.id === phaseId);
+            if (phase) {
+                phase.status = status;
+                if (status === 'completed' && !phase.completedDate) {
+                    phase.completedDate = new Date().toISOString().split('T')[0];
+                }
+                
+                console.log(`フェーズ ${phase.name} のステータスを ${status} に更新`);
+                autoSyncPages();
+            }
+        }
+
+        function markFeatureComplete() {
+            const featureId = prompt('完了マークする機能IDを入力してください:');
+            if (featureId) {
+                updateFeatureStatus(featureId, 'completed');
+                window.progressAdmin.renderFeatureList();
+            }
+        }
+
+        function updatePhaseProgress() {
+            if (window.progressSync) {
+                window.progressSync.progressData.project.lastUpdated = new Date().toISOString().split('T')[0];
+                autoSyncPages();
+                alert('フェーズ進捗が更新されました');
+            }
+        }
+
+        function syncAllPages() {
+            if (window.progressSync) {
+                window.progressSync.syncAllPages();
+                alert('全ページの同期が完了しました');
+            }
+        }
+
+        function exportProgressData() {
+            if (window.progressSync?.progressData) {
+                const dataStr = JSON.stringify(window.progressSync.progressData, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `project-progress-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        function autoSyncPages() {
+            // 自動同期（実際の実装では、ここでファイルに書き戻しを行う）
+            setTimeout(() => {
+                if (window.progressSync) {
+                    window.progressSync.syncAllPages();
+                }
+            }, 100);
+        }
+
+        // 初期化
+        let progressAdmin;
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                progressAdmin = new ProgressAdmin();
+                window.progressAdmin = progressAdmin;
+            }, 200);
+        });
+    </script>
+</body>
+</html>

@@ -6,6 +6,7 @@
     <title>フロントオフィス生産性向上アプリ - 開発進捗ダッシュボード</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="progress-sync.js"></script>
     <style>
         .progress-bar {
             transition: width 0.5s ease-in-out;
@@ -27,10 +28,11 @@
                 <div class="space-x-4">
                     <a href="index.html" class="text-gray-800 font-medium border-b-2 border-blue-600">進捗ダッシュボード</a>
                     <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
+                    <a href="test-specification.html" class="text-blue-600 hover:text-blue-800 font-medium">テスト仕様書</a>
                     <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
-                    <a href="ai-agent-research.html" class="text-blue-600 hover:text-blue-800 font-medium">AI調査レポート</a>
                     <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">社内データ検索</a>
                     <a href="feedback-dashboard.html" class="text-blue-600 hover:text-blue-800 font-medium">フィードバック</a>
+                    <a href="progress-admin.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗管理</a>
                 </div>
             </div>
         </nav>
@@ -58,6 +60,7 @@
         </header>
 
         <!-- 全体フェーズ概要 -->
+        <div id="dashboard-content">
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">プロジェクト全体フェーズ概要</h2>
             <div class="grid md:grid-cols-4 gap-4 mb-6">
@@ -138,6 +141,7 @@
                     <p class="text-sm text-blue-700 mt-2">🎉 Phase 1完了 | 次フェーズ選択可能</p>
                 </div>
             </div>
+        </div>
         </div>
 
         <!-- プロジェクト概要 -->
