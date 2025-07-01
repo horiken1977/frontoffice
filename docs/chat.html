@@ -289,32 +289,25 @@
                 this.messageInput.addEventListener('compositionstart', () => {
                     isComposing = true;
                     compositionStatus.textContent = '[変換中]';
-                    console.log('🎌 日本語入力開始');
                 });
                 
                 this.messageInput.addEventListener('compositionend', () => {
                     isComposing = false;
                     compositionStatus.textContent = '';
-                    console.log('✅ 日本語入力確定');
                 });
 
                 this.messageInput.addEventListener('keydown', (e) => {
-                    console.log('⌨️ キー押下:', e.key, 'isComposing:', isComposing, 'shiftKey:', e.shiftKey);
-                    
                     // 日本語入力中（変換中）は送信を無効化
                     if (isComposing) {
-                        console.log('🚫 変換中のため送信をスキップ');
                         return;
                     }
                     
                     if (e.key === 'Enter') {
                         if (e.shiftKey) {
                             // Shift+Enter: 改行（デフォルト動作を許可）
-                            console.log('📝 Shift+Enter: 改行');
                             return;
                         } else {
                             // Enter単体: 送信
-                            console.log('🚀 Enter: 送信実行');
                             e.preventDefault();
                             if (!this.sendButton.disabled) {
                                 this.sendMessage();
