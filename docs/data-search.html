@@ -146,16 +146,22 @@
                     <div class="flex space-x-2">
                         <input 
                             type="text" 
-                            id="searchQuery" 
+                            id="knowledgeSearchInput" 
                             placeholder="例: IT業界の顧客で500万円以上の予算がある会社を教えて"
                             class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                         <button 
-                            onclick="performSearch()" 
+                            id="knowledgeSearchButton"
                             class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                         >
                             検索
                         </button>
+                    </div>
+                    <div id="searchLoading" class="mt-2 text-center text-gray-600" style="display: none;">
+                        <div class="inline-flex items-center">
+                            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                            AIで社内データを検索しています...
+                        </div>
                     </div>
                 </div>
 
@@ -163,27 +169,38 @@
                 <div class="mb-6">
                     <p class="text-sm text-gray-600 mb-3">💡 クイック検索:</p>
                     <div class="flex flex-wrap gap-2">
-                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="製造業の顧客リスト">
+                        <button class="knowledge-quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="製造業の顧客で予算1000万円以上の案件">
                             製造業の顧客
                         </button>
-                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="予算1000万円以上の案件">
+                        <button class="knowledge-quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="予算1000万円以上の高額案件の特徴">
                             高額案件
                         </button>
-                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="AI営業アシスタントの機能と価格">
+                        <button class="knowledge-quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="AI営業アシスタントの機能と価格詳細">
                             商品機能
                         </button>
-                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="Salesforceとの競合比較">
+                        <button class="knowledge-quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="Salesforceとの競合比較分析">
                             競合比較
+                        </button>
+                        <button class="knowledge-quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="2025年Q1導入予定の案件">
+                            導入予定案件
+                        </button>
+                        <button class="knowledge-quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="IT業界向けの推奨商品">
+                            業界別推奨
                         </button>
                     </div>
                 </div>
 
                 <!-- 検索結果 -->
-                <div id="searchResults" class="border rounded-lg p-4 min-h-64 bg-gray-50">
-                    <p class="text-gray-500 text-center py-12">
-                        <span class="text-4xl mb-4 block">🔍</span>
-                        検索クエリを入力して「検索」ボタンを押してください
-                    </p>
+                <div id="knowledgeSearchResults" class="border rounded-lg p-4 min-h-64 bg-gray-50">
+                    <div class="text-center py-12">
+                        <span class="text-4xl mb-4 block">🤖</span>
+                        <p class="text-gray-600 font-medium">AI Knowledge Base検索</p>
+                        <p class="text-gray-500 text-sm mt-2">検索クエリを入力してAIで社内データを検索できます</p>
+                        <div class="mt-4 text-xs text-gray-400">
+                            <p>🔗 Dify + Google Gemini Flash</p>
+                            <p>📊 社内データ連携済み</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -426,10 +443,45 @@
             });
         });
 
-        // 検索フォームのEnterキー対応
-        document.getElementById('searchQuery').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
+        // 旧検索機能は無効化
+        // document.getElementById('searchQuery').addEventListener('keypress', (e) => {
+        //     if (e.key === 'Enter') {
+        //         performSearch();
+        //     }
+        // });
+    </script>
+
+    <!-- Dify Knowledge Base統合 -->
+    <script src="dify-knowledge-integration.js"></script>
+    <script>
+        // Dify Knowledge Base 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            // API Keyを設定（既存のDify設定を使用）
+            const API_KEY = 'app-fOpZcklIbAygUiotfGdH58zY';
+            
+            // Knowledge Search System初期化
+            const knowledgeSystem = initializeKnowledgeSearch(API_KEY);
+            
+            if (knowledgeSystem) {
+                console.log('✅ Dify Knowledge Base検索機能が有効になりました');
+                
+                // 初期化完了の表示更新
+                const resultsContainer = document.getElementById('knowledgeSearchResults');
+                if (resultsContainer) {
+                    const statusDiv = resultsContainer.querySelector('div');
+                    statusDiv.innerHTML = `
+                        <span class="text-4xl mb-4 block">✅</span>
+                        <p class="text-green-600 font-medium">AI Knowledge Base検索 - 準備完了</p>
+                        <p class="text-gray-500 text-sm mt-2">社内データからAIが自動検索します</p>
+                        <div class="mt-4 text-xs text-gray-400">
+                            <p>🔗 Dify + Google Gemini Flash</p>
+                            <p>📊 Knowledge Base統合済み</p>
+                            <p>⚡ リアルタイム検索対応</p>
+                        </div>
+                    `;
+                }
+            } else {
+                console.error('❌ Knowledge Search System初期化に失敗しました');
             }
         });
     </script>
