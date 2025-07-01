@@ -159,106 +159,127 @@
             </div>
         </div>
 
-        <!-- 注意事項 -->
-        <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+        <!-- ステータス表示 -->
+        <div class="mt-6 bg-green-50 border-l-4 border-green-400 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <span class="text-yellow-400 text-xl">⚠️</span>
+                    <span class="text-green-400 text-xl">✅</span>
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-yellow-800">開発中のMVP機能</h3>
-                    <p class="mt-1 text-sm text-yellow-700">
-                        現在は基本的なチャット入力画面のみ実装されています。AI応答機能は次のスプリントで実装予定です。
+                    <h3 class="text-sm font-medium text-green-800">Dify AI統合完了</h3>
+                    <p class="mt-1 text-sm text-green-700">
+                        Google Gemini Flash APIを使用した営業支援AIが利用可能です。
+                        上記のチャット画面で質問やリクエストを入力してください。
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Dify API統合スクリプト -->
+    <script src="dify-integration.js"></script>
+    
     <script>
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const charCount = document.getElementById('charCount');
-        const chatMessages = document.getElementById('chatMessages');
-        const quickActions = document.querySelectorAll('.quick-action');
-
-        // 文字数カウント
-        messageInput.addEventListener('input', function() {
-            const length = this.value.length;
-            charCount.textContent = length;
-            sendButton.disabled = length === 0;
-        });
-
-        // Enter + Shift で改行、Enter のみで送信
-        messageInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                if (!sendButton.disabled) {
-                    sendMessage();
-                }
-            }
-        });
-
-        // 送信ボタン
-        sendButton.addEventListener('click', sendMessage);
-
-        // クイックアクション
-        quickActions.forEach(button => {
-            button.addEventListener('click', function() {
-                const message = this.getAttribute('data-message');
-                messageInput.value = message;
-                messageInput.dispatchEvent(new Event('input'));
-                messageInput.focus();
-            });
-        });
-
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (!message) return;
-
-            // ユーザーメッセージを追加
-            addMessage('user', message);
-
-            // 入力をクリア
-            messageInput.value = '';
-            messageInput.dispatchEvent(new Event('input'));
-
-            // AI応答をシミュレート（MVP段階）
-            setTimeout(() => {
-                addMessage('ai', 'ありがとうございます。現在はMVP開発段階のため、実際のAI処理機能は次のスプリントで実装予定です。入力内容は正常に受信されました。');
-            }, 1000);
-        }
-
-        function addMessage(sender, text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message flex items-start space-x-3';
+        // フォールバック: Dify APIが設定されていない場合のシミュレーション
+        if (typeof window.difyChat === 'undefined') {
+            console.log('Dify API未設定のため、シミュレーションモードで動作します');
             
-            if (sender === 'user') {
-                messageDiv.innerHTML = `
-                    <div class="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
-                        You
-                    </div>
-                    <div class="bg-gray-100 rounded-lg px-4 py-3 max-w-md">
-                        <p class="text-gray-800">${text}</p>
-                    </div>
-                `;
-            } else {
-                messageDiv.innerHTML = `
-                    <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
-                        AI
-                    </div>
-                    <div class="bg-blue-50 rounded-lg px-4 py-3 max-w-md">
-                        <p class="text-gray-800">${text}</p>
-                    </div>
-                `;
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const charCount = document.getElementById('charCount');
+            const chatMessages = document.getElementById('chatMessages');
+            const quickActions = document.querySelectorAll('.quick-action');
+
+            // 文字数カウント
+            messageInput.addEventListener('input', function() {
+                const length = this.value.length;
+                charCount.textContent = length;
+                sendButton.disabled = length === 0;
+            });
+
+            // Enter + Shift で改行、Enter のみで送信
+            messageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (!sendButton.disabled) {
+                        sendMessage();
+                    }
+                }
+            });
+
+            // 送信ボタン
+            sendButton.addEventListener('click', sendMessage);
+
+            // クイックアクション
+            quickActions.forEach(button => {
+                button.addEventListener('click', function() {
+                    const message = this.getAttribute('data-message');
+                    messageInput.value = message;
+                    messageInput.dispatchEvent(new Event('input'));
+                    messageInput.focus();
+                });
+            });
+
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                if (!message) return;
+
+                // ユーザーメッセージを追加
+                addMessage('user', message);
+
+                // 入力をクリア
+                messageInput.value = '';
+                messageInput.dispatchEvent(new Event('input'));
+
+                // AI応答をシミュレート
+                setTimeout(() => {
+                    const response = `Dify APIの設定が完了していません。
+
+以下の手順でAPI統合を完了してください：
+
+1. Difyダッシュボードで「API アクセス」を開く
+2. APIエンドポイントとAPIキーを取得
+3. dify-integration.js の DIFY_CONFIG を更新：
+   - apiEndpoint: 'YOUR_ENDPOINT'
+   - apiKey: 'YOUR_API_KEY'
+
+設定が完了すると、実際のAI応答が表示されます。`;
+                    
+                    addMessage('ai', response);
+                }, 1000);
             }
 
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+            function addMessage(sender, text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message flex items-start space-x-3';
+                
+                if (sender === 'user') {
+                    messageDiv.innerHTML = `
+                        <div class="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                            You
+                        </div>
+                        <div class="bg-gray-100 rounded-lg px-4 py-3 max-w-md">
+                            <p class="text-gray-800 whitespace-pre-wrap">${text}</p>
+                        </div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                            AI
+                        </div>
+                        <div class="bg-blue-50 rounded-lg px-4 py-3 max-w-md">
+                            <p class="text-gray-800 whitespace-pre-wrap">${text}</p>
+                        </div>
+                    `;
+                }
 
-        // 初期フォーカス
-        messageInput.focus();
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // 初期フォーカス
+            messageInput.focus();
+        }
     </script>
 </body>
 </html>
