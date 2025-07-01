@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社内データ検索 - フロントオフィス生産性向上アプリ v1.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .search-container {
+            min-height: 600px;
+        }
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background-color: #f3f4f6;
+        }
+        .upload-area.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .file-item {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
+                <div class="space-x-4">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
+                    <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
+                    <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
+                    <a href="data-search.html" class="text-gray-800 font-medium border-b-2 border-blue-600">社内データ検索</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-6">
+        <!-- ヘッダー -->
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">社内データ検索</h1>
+            <p class="text-gray-600 mb-4">Phase 1: Dify簡易プロトタイプ - ファイルアップロード方式</p>
+            
+            <!-- ステータス表示 -->
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+                <div class="flex items-center">
+                    <span class="text-blue-400 text-xl mr-3">📊</span>
+                    <div>
+                        <h3 class="text-sm font-medium text-blue-800">Phase 1: Dify Knowledge Base統合</h3>
+                        <p class="mt-1 text-sm text-blue-700">
+                            CSV、PDF、Excelファイルをアップロードして社内データを検索できます
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- アップロード エリア -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">📁 データファイル管理</h2>
+                
+                <!-- ファイルアップロード -->
+                <div id="uploadArea" class="upload-area rounded-lg p-8 text-center mb-6">
+                    <div class="mb-4">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="text-gray-600">
+                        <p class="font-medium">ファイルをドラッグ&ドロップ または</p>
+                        <input type="file" id="fileInput" multiple accept=".csv,.pdf,.xlsx,.xls,.txt,.md" class="hidden">
+                        <button onclick="document.getElementById('fileInput').click()" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            ファイルを選択
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">対応形式: CSV, PDF, Excel, テキスト, Markdown</p>
+                    </div>
+                </div>
+
+                <!-- アップロード済みファイル一覧 -->
+                <div id="fileList" class="space-y-3">
+                    <!-- サンプルファイル（プリロード） -->
+                    <div class="file-item flex items-center justify-between p-3 border rounded-lg bg-green-50">
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3">📄</span>
+                            <div>
+                                <p class="font-medium text-green-800">customer-info.csv</p>
+                                <p class="text-sm text-green-600">顧客情報データ（10件）</p>
+                            </div>
+                        </div>
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">読込済み</span>
+                    </div>
+                    <div class="file-item flex items-center justify-between p-3 border rounded-lg bg-green-50">
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3">📋</span>
+                            <div>
+                                <p class="font-medium text-green-800">product-catalog.md</p>
+                                <p class="text-sm text-green-600">商品カタログ情報</p>
+                            </div>
+                        </div>
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">読込済み</span>
+                    </div>
+                    <div class="file-item flex items-center justify-between p-3 border rounded-lg bg-green-50">
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3">📊</span>
+                            <div>
+                                <p class="font-medium text-green-800">competitive-analysis.md</p>
+                                <p class="text-sm text-green-600">競合分析データ</p>
+                            </div>
+                        </div>
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">読込済み</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 検索エリア -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">🔍 データ検索</h2>
+                
+                <!-- 検索フォーム -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">検索クエリ</label>
+                    <div class="flex space-x-2">
+                        <input 
+                            type="text" 
+                            id="searchQuery" 
+                            placeholder="例: IT業界の顧客で500万円以上の予算がある会社を教えて"
+                            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                        <button 
+                            onclick="performSearch()" 
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                        >
+                            検索
+                        </button>
+                    </div>
+                </div>
+
+                <!-- クイック検索 -->
+                <div class="mb-6">
+                    <p class="text-sm text-gray-600 mb-3">💡 クイック検索:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="製造業の顧客リスト">
+                            製造業の顧客
+                        </button>
+                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="予算1000万円以上の案件">
+                            高額案件
+                        </button>
+                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="AI営業アシスタントの機能と価格">
+                            商品機能
+                        </button>
+                        <button class="quick-search bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm transition-colors" data-query="Salesforceとの競合比較">
+                            競合比較
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 検索結果 -->
+                <div id="searchResults" class="border rounded-lg p-4 min-h-64 bg-gray-50">
+                    <p class="text-gray-500 text-center py-12">
+                        <span class="text-4xl mb-4 block">🔍</span>
+                        検索クエリを入力して「検索」ボタンを押してください
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用方法説明 -->
+        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">📖 Phase 1 機能説明</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">🎯 実装済み機能</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✅</span>
+                            <span>ファイルアップロード（ドラッグ&ドロップ対応）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✅</span>
+                            <span>サンプルデータの事前読み込み</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✅</span>
+                            <span>自然言語による検索クエリ</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✅</span>
+                            <span>クイック検索テンプレート</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">🚀 次期実装予定</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">📅</span>
+                            <span>Dify Knowledge Base統合</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">📅</span>
+                            <span>AI検索結果の生成</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">📅</span>
+                            <span>営業提案への活用機能</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">📅</span>
+                            <span>検索履歴・お気に入り保存</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ファイルアップロード関連
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+
+        // ドラッグ&ドロップ
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        // ファイル選択
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                addFileToList(file);
+            });
+        }
+
+        function addFileToList(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item flex items-center justify-between p-3 border rounded-lg bg-blue-50';
+            
+            const fileIcon = getFileIcon(file.name);
+            const fileSize = (file.size / 1024).toFixed(1) + ' KB';
+            
+            fileItem.innerHTML = `
+                <div class="flex items-center">
+                    <span class="text-blue-600 mr-3">${fileIcon}</span>
+                    <div>
+                        <p class="font-medium text-blue-800">${file.name}</p>
+                        <p class="text-sm text-blue-600">${fileSize}</p>
+                    </div>
+                </div>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">アップロード中...</span>
+            `;
+            
+            fileList.appendChild(fileItem);
+            
+            // シミュレート: アップロード完了
+            setTimeout(() => {
+                const status = fileItem.querySelector('span:last-child');
+                status.textContent = '読込済み';
+                status.className = 'bg-green-100 text-green-800 px-2 py-1 rounded text-xs';
+                fileItem.className = 'file-item flex items-center justify-between p-3 border rounded-lg bg-green-50';
+            }, 2000);
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            switch(ext) {
+                case 'csv': return '📊';
+                case 'pdf': return '📄';
+                case 'xlsx': case 'xls': return '📈';
+                case 'txt': return '📝';
+                case 'md': return '📋';
+                default: return '📄';
+            }
+        }
+
+        // 検索関連
+        function performSearch() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) {
+                alert('検索クエリを入力してください');
+                return;
+            }
+            
+            displaySearchResults(query);
+        }
+
+        function displaySearchResults(query) {
+            const resultsDiv = document.getElementById('searchResults');
+            
+            // ローディング表示
+            resultsDiv.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p class="text-gray-600">検索中...</p>
+                </div>
+            `;
+            
+            // シミュレート: 検索結果
+            setTimeout(() => {
+                resultsDiv.innerHTML = getSimulatedResults(query);
+            }, 2000);
+        }
+
+        function getSimulatedResults(query) {
+            const results = {
+                "製造業": `
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-gray-800 mb-3">🔍 検索結果: "${query}"</h3>
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
+                            <h4 class="font-medium text-blue-800">製造業ジャパン株式会社</h4>
+                            <p class="text-sm text-blue-600 mt-1">従業員: 1,200名 | 売上: 300億円 | 予算: 5,000万円</p>
+                            <p class="text-sm text-gray-600 mt-2">課題: 生産性向上・品質管理</p>
+                        </div>
+                        <div class="bg-green-50 border-l-4 border-green-400 p-4">
+                            <h4 class="font-medium text-green-800">推奨商品</h4>
+                            <p class="text-sm text-green-600">製造業特化 MES連携パッケージ（月額150万円〜）</p>
+                        </div>
+                    </div>
+                `,
+                "高額案件": `
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-gray-800 mb-3">🔍 検索結果: "${query}"</h3>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                            <h4 class="font-medium text-yellow-800">高額案件リスト</h4>
+                            <ul class="text-sm text-yellow-600 mt-2 space-y-1">
+                                <li>• 製造業ジャパン: 5,000万円（MES・品質管理）</li>
+                                <li>• ロジスティクス東日本: 3,000万円（WMS・配送管理）</li>
+                                <li>• グローバル商事: 2,000万円（ERP・在庫管理）</li>
+                            </ul>
+                        </div>
+                    </div>
+                `,
+                "AI営業": `
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-gray-800 mb-3">🔍 検索結果: "${query}"</h3>
+                        <div class="bg-purple-50 border-l-4 border-purple-400 p-4">
+                            <h4 class="font-medium text-purple-800">AI営業アシスタント Pro</h4>
+                            <p class="text-sm text-purple-600 mt-1">価格: 月額50万円〜 | 対象: 営業チーム10-50名</p>
+                            <p class="text-sm text-gray-600 mt-2">ROI: 営業効率40%向上、受注率25%向上</p>
+                        </div>
+                    </div>
+                `,
+                "Salesforce": `
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-gray-800 mb-3">🔍 検索結果: "${query}"</h3>
+                        <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                            <h4 class="font-medium text-red-800">vs. Salesforce 比較</h4>
+                            <ul class="text-sm text-red-600 mt-2 space-y-1">
+                                <li>• 価格優位性: 当社30-40%安価</li>
+                                <li>• 導入期間: 当社50%短縮</li>
+                                <li>• 日本語対応: 当社ネイティブ対応</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            };
+            
+            // キーワードに基づいて結果を選択
+            for (const [key, result] of Object.entries(results)) {
+                if (query.includes(key)) {
+                    return result;
+                }
+            }
+            
+            // デフォルト結果
+            return `
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">🔍 検索結果: "${query}"</h3>
+                    <div class="bg-gray-50 border-l-4 border-gray-400 p-4">
+                        <p class="text-gray-600">関連するデータが見つかりませんでした。</p>
+                        <p class="text-sm text-gray-500 mt-2">
+                            ※ 現在はサンプルデータでの検索です。
+                            実際の実装では、アップロードしたファイルから検索結果を生成します。
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // クイック検索
+        document.querySelectorAll('.quick-search').forEach(button => {
+            button.addEventListener('click', () => {
+                const query = button.getAttribute('data-query');
+                document.getElementById('searchQuery').value = query;
+                performSearch();
+            });
+        });
+
+        // 検索フォームのEnterキー対応
+        document.getElementById('searchQuery').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>

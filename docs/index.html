@@ -29,6 +29,7 @@
                     <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
                     <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
                     <a href="ai-agent-research.html" class="text-blue-600 hover:text-blue-800 font-medium">AI調査レポート</a>
+                    <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">社内データ検索</a>
                 </div>
             </div>
         </nav>
@@ -46,8 +47,11 @@
                 <a href="chat.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors mr-2">
                     💬 チャット入力を試す
                 </a>
-                <a href="ai-agent-research.html" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                <a href="ai-agent-research.html" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors mr-2">
                     🔍 AI調査レポートを見る
+                </a>
+                <a href="data-search.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    📊 社内データ検索を試す
                 </a>
             </div>
         </header>
@@ -325,10 +329,10 @@
                     <span class="line-through text-gray-500">営業支援AI機能（6機能）プロンプト対応</span>
                     <span class="ml-auto bg-green-100 text-green-800 px-2 py-1 rounded text-xs">完了</span>
                 </div>
-                <div class="flex items-center p-3 border rounded-lg bg-orange-50">
+                <div class="flex items-center p-3 border rounded-lg bg-blue-50">
                     <input type="checkbox" class="mr-3">
-                    <span class="text-gray-700">社内DB・ファイルサーバー検索機能</span>
-                    <span class="ml-auto bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">Phase 1予定</span>
+                    <span class="text-gray-700">社内DB・ファイルサーバー検索機能（Phase 1: Dify版）</span>
+                    <span class="ml-auto bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">実装開始</span>
                 </div>
                 <div class="flex items-center p-3 border rounded-lg bg-green-50">
                     <input type="checkbox" checked class="mr-3">
@@ -358,10 +362,35 @@
                         <p>• <strong>継続利用:</strong> 現状維持（$0/月）</p>
                     </div>
                 </div>
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="font-semibold text-blue-800 mb-2">📋 社内DB検索 段階的実装計画</h3>
+                    <div class="text-sm text-blue-700 space-y-2">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-green-100 p-2 rounded">
+                                <p class="font-medium text-green-800">Phase 1 (実装中)</p>
+                                <p class="text-xs text-green-600">Dify簡易プロトタイプ</p>
+                                <p class="text-xs text-green-600">ファイルアップロード方式</p>
+                                <p class="text-xs text-green-600">期間: 1-2週間 | $0</p>
+                            </div>
+                            <div class="bg-blue-100 p-2 rounded">
+                                <p class="font-medium text-blue-800">Phase 2 (予定)</p>
+                                <p class="text-xs text-blue-600">n8n統合・ワークフロー</p>
+                                <p class="text-xs text-blue-600">API連携方式</p>
+                                <p class="text-xs text-blue-600">期間: 3-4週間 | $50-200</p>
+                            </div>
+                            <div class="bg-purple-100 p-2 rounded">
+                                <p class="font-medium text-purple-800">Phase 3 (最終)</p>
+                                <p class="text-xs text-purple-600">IBM watsonx移行</p>
+                                <p class="text-xs text-purple-600">エンタープライズ統合</p>
+                                <p class="text-xs text-purple-600">期間: 4-8週間 | $500-3000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="mt-4 p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
-                    <h3 class="font-semibold text-red-800 mb-2">⚠️ 未決事項・要決定</h3>
+                    <h3 class="font-semibold text-red-800 mb-2">⚠️ 残り未決事項</h3>
                     <div class="text-sm text-red-700 space-y-1">
-                        <p>🔥 <strong>社内データ連携:</strong> ファイルアップロード vs API連携 vs DB直接接続</p>
+                        <p>✅ <strong>社内データ連携:</strong> 段階的実装計画決定済み</p>
                         <p>🔥 <strong>権限管理:</strong> ユーザー認証、データアクセス制御の必要性</p>
                         <p>🔥 <strong>次フェーズ判断:</strong> ユーザーフィードバック収集方法と進行基準</p>
                     </div>
