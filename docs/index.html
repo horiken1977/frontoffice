@@ -6,7 +6,6 @@
     <title>フロントオフィス生産性向上アプリ - 開発進捗ダッシュボード</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="progress-sync.js"></script>
     <style>
         .progress-bar {
             transition: width 0.5s ease-in-out;
@@ -28,12 +27,10 @@
                 <div class="space-x-4">
                     <a href="index.html" class="text-gray-800 font-medium border-b-2 border-blue-600">進捗ダッシュボード</a>
                     <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
-                    <a href="feature-design.html" class="text-blue-600 hover:text-blue-800 font-medium">機能設計書</a>
                     <a href="test-specification.html" class="text-blue-600 hover:text-blue-800 font-medium">テスト仕様書</a>
                     <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
                     <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">社内データ検索</a>
                     <a href="feedback-dashboard.html" class="text-blue-600 hover:text-blue-800 font-medium">フィードバック</a>
-                    <a href="progress-admin.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗管理</a>
                 </div>
             </div>
         </nav>
@@ -44,7 +41,7 @@
             <p class="text-xl text-gray-600">フロントオフィス生産性向上アプリケーション</p>
             <div class="mt-4 flex items-center space-x-4">
                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">MVP開発中</span>
-                <span class="text-gray-500 text-sm">最終更新: 2025-06-30</span>
+                <span class="text-gray-500 text-sm">最終更新: 2025-07-01</span>
                 <a href="plan.html" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors mr-2">
                     📋 詳細計画書を見る
                 </a>
@@ -61,7 +58,6 @@
         </header>
 
         <!-- 全体フェーズ概要 -->
-        <div id="dashboard-content">
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">プロジェクト全体フェーズ概要</h2>
             <div class="grid md:grid-cols-4 gap-4 mb-6">
@@ -142,7 +138,6 @@
                     <p class="text-sm text-blue-700 mt-2">🎉 Phase 1完了 | 次フェーズ選択可能</p>
                 </div>
             </div>
-        </div>
         </div>
 
         <!-- プロジェクト概要 -->
@@ -324,6 +319,40 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">週別進捗予定</h2>
             <canvas id="progressChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- 新機能追加・依頼事項 -->
+        <div class="bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">📝</span>
+                新機能追加・依頼事項
+            </h2>
+            <div class="bg-white/10 rounded-lg p-4 mb-4">
+                <p class="text-green-100 text-sm mb-3">
+                    💬 チャットからの依頼内容を開発計画書に反映し、テスト仕様書とダッシュボードを自動更新
+                </p>
+                <div id="dashboard-requests" class="space-y-3">
+                    <!-- チャットからの依頼がここに表示されます -->
+                    <div class="bg-white/20 rounded p-3">
+                        <p class="text-white font-medium">現在進行中の依頼事項なし</p>
+                        <p class="text-green-100 text-sm">新しい機能追加や修正要望はチャットでお伝えください</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">📋 開発計画書</h3>
+                    <p class="text-green-100 text-sm">依頼事項を記録・管理</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">🧪 テスト仕様書</h3>
+                    <p class="text-green-100 text-sm">テストケース自動生成</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">📊 ダッシュボード</h3>
+                    <p class="text-green-100 text-sm">進捗状況自動更新</p>
+                </div>
+            </div>
         </div>
 
         <!-- Phase 1 完了成果 -->

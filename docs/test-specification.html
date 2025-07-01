@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>テスト仕様書 - フロントオフィス生産性向上アプリ</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="progress-sync.js"></script>
     <style>
         .test-case {
             transition: all 0.2s ease-in-out;
@@ -46,7 +45,7 @@
             <div class="flex items-center space-x-4">
                 <span id="test-phase-badge" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Phase 1: ワークフロー統合</span>
                 <span class="text-gray-500 text-sm">バージョン: v2.1</span>
-                <span class="text-gray-500 text-sm">最終更新: 2025-01-07</span>
+                <span class="text-gray-500 text-sm">最終更新: 2025-07-01</span>
             </div>
         </header>
 
@@ -235,9 +234,21 @@
             </div>
         </div>
 
-        <!-- 新機能テストケース (動的生成) -->
-        <div id="dynamic-test-cases">
-            <!-- 機能設計書から自動生成されるテストケース -->
+        <!-- 新機能テストケース -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="new-feature-tests">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">📝 新機能テストケース</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                <p class="text-blue-700 text-sm mb-3">
+                    💬 このセクションは開発計画書の新機能追加に連動して自動更新されます
+                </p>
+                <div id="chat-test-cases" class="space-y-3">
+                    <!-- チャットからの依頼に基づくテストケースがここに追加されます -->
+                    <div class="bg-white rounded p-3 border">
+                        <p class="text-gray-700 font-medium">現在追加のテストケースなし</p>
+                        <p class="text-gray-500 text-sm">新機能が追加されると、自動的にテストケースが生成されます</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- テスト環境情報 -->
@@ -290,16 +301,6 @@
         // ページ読み込み時に実行
         document.addEventListener('DOMContentLoaded', () => {
             updateTestSummary();
-            
-            // Progress sync systemからフェーズ情報を取得
-            setTimeout(() => {
-                if (window.progressSync && window.progressSync.progressData) {
-                    const currentPhase = window.progressSync.getCurrentPhase();
-                    if (currentPhase) {
-                        document.getElementById('test-phase-badge').textContent = currentPhase.name;
-                    }
-                }
-            }, 100);
         });
     </script>
 </body>
