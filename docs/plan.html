@@ -252,30 +252,33 @@
                         <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mr-3">マーケティング機能</span>
                     </h3>
                     <div class="grid gap-3">
-                        <div class="feature-item p-4 border rounded-lg bg-green-50">
+                        <div class="feature-item p-4 border rounded-lg bg-yellow-50">
                             <div class="flex items-start">
-                                <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">✓</span>
+                                <span class="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">⚠</span>
                                 <div>
-                                    <h4 class="font-semibold text-green-800">DeepResearchを活用した仮想ペルソナ作成</h4>
-                                    <p class="text-green-600 text-sm mt-1">✅ 完了: AIプロンプトにより仮想ペルソナ作成対応</p>
+                                    <h4 class="font-semibold text-yellow-800">DeepResearchを活用した仮想ペルソナ作成</h4>
+                                    <p class="text-yellow-600 text-sm mt-1">Phase 2対象: n8n統合時にDifyで実装予定</p>
+                                    <p class="text-yellow-500 text-xs mt-1">📑 詳細な市場調査に基づいたペルソナ設計</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="feature-item p-4 border rounded-lg bg-green-50">
+                        <div class="feature-item p-4 border rounded-lg bg-yellow-50">
                             <div class="flex items-start">
-                                <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">✓</span>
+                                <span class="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">⚠</span>
                                 <div>
-                                    <h4 class="font-semibold text-green-800">仮想ペルソナへのインタビュー機能（LLMとの対話）</h4>
-                                    <p class="text-green-600 text-sm mt-1">✅ 完了: AI対話型インタビュー機能として実装</p>
+                                    <h4 class="font-semibold text-yellow-800">仮想ペルソナへのインタビュー機能（LLMとの対話）</h4>
+                                    <p class="text-yellow-600 text-sm mt-1">Phase 2対象: n8nワークフローで実装予定</p>
+                                    <p class="text-yellow-500 text-xs mt-1">💬 AIと自然言語で対話してインサイト収集</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="feature-item p-4 border rounded-lg bg-green-50">
+                        <div class="feature-item p-4 border rounded-lg bg-yellow-50">
                             <div class="flex items-start">
-                                <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">✓</span>
+                                <span class="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">⚠</span>
                                 <div>
-                                    <h4 class="font-semibold text-green-800">インタビュー回答一覧保存・管理</h4>
-                                    <p class="text-green-600 text-sm mt-1">✅ 完了: 下書き保存・自動保存機能として実装</p>
+                                    <h4 class="font-semibold text-yellow-800">インタビュー回答一覧保存・管理</h4>
+                                    <p class="text-yellow-600 text-sm mt-1">Phase 2対象: n8n+DB連携で実装予定</p>
+                                    <p class="text-yellow-500 text-xs mt-1">💾 収集したインサイトの体系的な保存と分析</p>
                                 </div>
                             </div>
                         </div>
@@ -345,6 +348,26 @@
                     <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">5</span>
                     Phase 2: エンタープライズ統合（予定）
                 </h2>
+                
+                <!-- マーケティング高度機能 -->
+                <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-4">
+                    <h3 class="text-lg font-semibold text-purple-800 mb-2">📊 高度マーケティング機能（n8n+Dify実装）</h3>
+                    <div class="grid md:grid-cols-3 gap-3">
+                        <div class="bg-white rounded p-3">
+                            <h4 class="font-medium text-purple-700">仮想ペルソナ作成</h4>
+                            <p class="text-xs text-purple-600">DeepResearch活用</p>
+                        </div>
+                        <div class="bg-white rounded p-3">
+                            <h4 class="font-medium text-purple-700">AI対話型インタビュー</h4>
+                            <p class="text-xs text-purple-600">LLMとの自然対話</p>
+                        </div>
+                        <div class="bg-white rounded p-3">
+                            <h4 class="font-medium text-purple-700">インタビュー回答管理</h4>
+                            <p class="text-xs text-purple-600">体系的保存・分析</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="grid gap-3">
                     <div class="feature-item p-4 border rounded-lg bg-gray-50">
                         <div class="flex items-center justify-between">
@@ -412,12 +435,12 @@
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
                     <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">7</span>
-                    Phase 1 実装状況（完了）
+                    Phase 1 実装状況（コア機能完了）
                 </h2>
                 <div class="mb-6">
                     <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
-                        <h3 class="text-lg font-semibold text-green-800 mb-2">🎉 Phase 1 完了済み機能</h3>
-                        <p class="text-green-700 text-sm mb-3">Dify + Google Gemini統合によるゼロコストMVPの完成</p>
+                        <h3 class="text-lg font-semibold text-green-800 mb-2">🎉 Phase 1 コア機能完了</h3>
+                        <p class="text-green-700 text-sm mb-3">営業支援・基本マーケティング機能の実装完了（高度なマーケティング機能はPhase 2で実装予定）</p>
                     </div>
                 </div>
                 
