@@ -87,13 +87,14 @@
                     <div class="flex-1">
                         <textarea 
                             id="messageInput" 
-                            placeholder="メッセージを入力してください..."
+                            placeholder="メッセージを入力してください... (Enter: 送信 / Shift+Enter: 改行)"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             rows="3"
                             maxlength="1000"
                         ></textarea>
-                        <div class="text-right text-xs text-gray-500 mt-1">
-                            <span id="charCount">0</span>/1000文字
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span class="text-gray-400">💡 Enter: 送信 / Shift+Enter: 改行</span>
+                            <span><span id="charCount">0</span>/1000文字</span>
                         </div>
                     </div>
                     <button 
@@ -278,11 +279,33 @@
                     this.sendButton.disabled = length === 0;
                 });
 
+                // 日本語入力対応: compositionstart/end で入力状態を追跡
+                let isComposing = false;
+                
+                this.messageInput.addEventListener('compositionstart', () => {
+                    isComposing = true;
+                });
+                
+                this.messageInput.addEventListener('compositionend', () => {
+                    isComposing = false;
+                });
+
                 this.messageInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        if (!this.sendButton.disabled) {
-                            this.sendMessage();
+                    // 日本語入力中（変換中）は送信を無効化
+                    if (isComposing) {
+                        return;
+                    }
+                    
+                    if (e.key === 'Enter') {
+                        if (e.shiftKey) {
+                            // Shift+Enter: 改行（デフォルト動作を許可）
+                            return;
+                        } else {
+                            // Enter単体: 送信
+                            e.preventDefault();
+                            if (!this.sendButton.disabled) {
+                                this.sendMessage();
+                            }
                         }
                     }
                 });
