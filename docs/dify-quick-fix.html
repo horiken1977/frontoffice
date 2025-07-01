@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dify Knowledge Base 修正手順</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">🔧 Dify Knowledge Base 修正手順</h1>
+        
+        <!-- 問題の説明 -->
+        <div class="bg-red-50 border-l-4 border-red-400 p-6 mb-8">
+            <h2 class="text-lg font-bold text-red-800 mb-2">🚨 現在の問題</h2>
+            <p class="text-red-700">DifyのAIが「社内データベースにアクセスできません」と応答している</p>
+            <p class="text-red-600 text-sm mt-2">原因: 既存のMVPアプリがKnowledge Baseと連携されていない</p>
+        </div>
+
+        <!-- 解決手順 -->
+        <div class="space-y-8">
+            <!-- Step 1 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-blue-800 mb-4">📝 Step 1: 新しいAIアプリケーションの作成</h2>
+                <div class="space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 rounded p-4">
+                        <h3 class="font-semibold text-blue-800 mb-2">作業手順:</h3>
+                        <ol class="list-decimal list-inside text-blue-700 space-y-1">
+                            <li>Dify管理画面で「Apps」メニューをクリック</li>
+                            <li>「Create from scratch」を選択</li>
+                            <li>アプリ設定:
+                                <ul class="list-disc list-inside ml-4 mt-2">
+                                    <li>App name: <strong>frontoffice-knowledge-search</strong></li>
+                                    <li>App type: <strong>Chat App</strong></li>
+                                    <li>Model: <strong>Gemini Pro</strong> または GPT-3.5-turbo</li>
+                                </ul>
+                            </li>
+                            <li>「Create」ボタンをクリック</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-green-800 mb-4">🔗 Step 2: Knowledge Baseとの連携設定</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-50 border border-green-200 rounded p-4">
+                        <h3 class="font-semibold text-green-800 mb-2">連携手順:</h3>
+                        <ol class="list-decimal list-inside text-green-700 space-y-1">
+                            <li>新しく作成したアプリの編集画面を開く</li>
+                            <li>左メニューの「Context」をクリック</li>
+                            <li>「Add Context」→「Knowledge Base」を選択</li>
+                            <li><strong>「frontoffice-data」</strong>を選択して追加</li>
+                            <li>設定確認:
+                                <ul class="list-disc list-inside ml-4 mt-2">
+                                    <li>Retrieval mode: <strong>Vector Search</strong></li>
+                                    <li>Top K: <strong>5</strong></li>
+                                    <li>Score threshold: <strong>0.5</strong></li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-purple-800 mb-4">💬 Step 3: システムプロンプトの設定</h2>
+                <div class="space-y-4">
+                    <div class="bg-purple-50 border border-purple-200 rounded p-4">
+                        <h3 class="font-semibold text-purple-800 mb-2">「Instructions」に以下をコピー&ペースト:</h3>
+                        <div class="bg-gray-100 border rounded p-4 text-sm font-mono overflow-x-auto">
+あなたは営業・マーケティング支援AIアシスタントです。<br>
+社内のKnowledge Baseから関連情報を検索して、以下の業務をサポートしてください：<br><br>
+
+1. 顧客情報の検索・分析<br>
+2. 商品・サービス情報の提供<br>
+3. 競合比較分析<br>
+4. 営業提案の作成支援<br><br>
+
+Knowledge Baseには以下のデータが含まれています：<br>
+- 顧客情報（業界、予算、課題、導入時期等）<br>
+- 商品カタログ（価格、機能、導入実績等）<br>
+- 競合分析（他社比較、差別化ポイント等）<br><br>
+
+ユーザーからの質問に対して、関連するデータを検索し、具体的で実用的な回答を提供してください。<br>
+データが見つからない場合は、その旨を伝えた上で一般的なアドバイスを提供してください。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-orange-800 mb-4">🔑 Step 4: 新しいAPIキーの取得</h2>
+                <div class="space-y-4">
+                    <div class="bg-orange-50 border border-orange-200 rounded p-4">
+                        <h3 class="font-semibold text-orange-800 mb-2">APIキー取得手順:</h3>
+                        <ol class="list-decimal list-inside text-orange-700 space-y-1">
+                            <li>アプリ設定画面の「API Access」をクリック</li>
+                            <li>新しいAPIキーをコピー（app-xxxxxxxxxxxxxxxx形式）</li>
+                            <li><strong>このAPIキーをメモまたはコピー</strong></li>
+                        </ol>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded p-4 mt-4">
+                        <h3 class="font-semibold text-yellow-800 mb-2">📋 新しいAPIキー記録欄:</h3>
+                        <div class="bg-white border rounded p-3">
+                            <code id="newApiKey" class="text-gray-500">新しいAPIキーをここに記録してください</code>
+                        </div>
+                        <button onclick="copyApiKey()" class="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm">
+                            コピー
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-indigo-800 mb-4">🧪 Step 5: 動作テスト</h2>
+                <div class="space-y-4">
+                    <div class="bg-indigo-50 border border-indigo-200 rounded p-4">
+                        <h3 class="font-semibold text-indigo-800 mb-2">Dify管理画面でのテスト:</h3>
+                        <ol class="list-decimal list-inside text-indigo-700 space-y-1">
+                            <li>新しいアプリの「Preview」または「Chat」をクリック</li>
+                            <li>以下のテストクエリを実行:
+                                <ul class="list-disc list-inside ml-4 mt-2">
+                                    <li><strong>"製造業の顧客情報を教えて"</strong></li>
+                                    <li><strong>"AI営業アシスタントの価格は？"</strong></li>
+                                    <li><strong>"Salesforceとの違いは？"</strong></li>
+                                </ul>
+                            </li>
+                            <li>Knowledge Baseからの情報が表示されることを確認</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 完了後のアクション -->
+        <div class="bg-green-50 border-l-4 border-green-400 p-6 mt-8">
+            <h2 class="text-lg font-bold text-green-800 mb-2">✅ 設定完了後</h2>
+            <p class="text-green-700">新しいAPIキーを確認後、WebアプリケーションのAPIキーを更新します。</p>
+            <p class="text-green-600 text-sm mt-2">設定が完了しましたら、新しいAPIキーをお知らせください。</p>
+        </div>
+    </div>
+
+    <script>
+        function copyApiKey() {
+            const apiKeyElement = document.getElementById('newApiKey');
+            const text = apiKeyElement.textContent;
+            
+            if (text && text !== '新しいAPIキーをここに記録してください') {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('APIキーをコピーしました');
+                });
+            } else {
+                alert('APIキーが設定されていません');
+            }
+        }
+
+        // APIキー入力機能
+        document.getElementById('newApiKey').addEventListener('click', function() {
+            const newKey = prompt('新しいAPIキーを入力してください:');
+            if (newKey && newKey.trim()) {
+                this.textContent = newKey.trim();
+                this.className = 'text-green-600 font-mono';
+            }
+        });
+    </script>
+</body>
+</html>
