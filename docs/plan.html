@@ -47,7 +47,9 @@
                     <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
                     <a href="plan.html" class="text-gray-800 font-medium border-b-2 border-blue-600">開発計画書</a>
                     <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
+                    <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">社内データ検索</a>
                     <a href="ai-agent-research.html" class="text-blue-600 hover:text-blue-800 font-medium">AI調査レポート</a>
+                    <a href="feedback-dashboard.html" class="text-blue-600 hover:text-blue-800 font-medium">フィードバック</a>
                 </div>
             </div>
         </div>
@@ -61,7 +63,7 @@
             <div class="flex items-center space-x-4">
                 <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium phase-badge">Phase 0: ゼロコストMVP完了</span>
                 <span class="text-gray-500 text-sm">バージョン: v2.0</span>
-                <span class="text-gray-500 text-sm">最終更新: 2025-07-01</span>
+                <span class="text-gray-500 text-sm">最終更新: 2025-01-07</span>
             </div>
         </header>
 
@@ -395,11 +397,95 @@
             </div>
         </section>
 
+        <!-- Phase 1実装状況 -->
+        <section class="mb-8">
+            <div class="section-card bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">7</span>
+                    Phase 1 実装状況（完了）
+                </h2>
+                <div class="mb-6">
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+                        <h3 class="text-lg font-semibold text-green-800 mb-2">🎉 Phase 1 完了済み機能</h3>
+                        <p class="text-green-700 text-sm mb-3">Dify + Google Gemini統合によるゼロコストMVPの完成</p>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-blue-800 mb-3">✅ 基盤機能</h4>
+                            <ul class="space-y-2 text-blue-700 text-sm">
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>AIチャット統合（Dify + Gemini Flash）</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>Knowledge Base検索機能</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>チャット履歴永続化</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>進捗管理ダッシュボード</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-purple-800 mb-3">✅ データ検索統合</h4>
+                            <ul class="space-y-2 text-purple-700 text-sm">
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>チャット↔データ検索統合</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>社内データベース検索</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>統合応答生成</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>検索クエリ最適化</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-orange-800 mb-3">✅ フィードバック機能</h4>
+                            <ul class="space-y-2 text-orange-700 text-sm">
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>構造化フィードバック収集</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>検索結果評価機能</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>GitHub Issue自動作成</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>フィードバック管理ダッシュボード</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-red-800 mb-3">✅ エクスポート・管理</h4>
+                            <ul class="space-y-2 text-red-700 text-sm">
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>チャット履歴CSVエクスポート</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>フィードバックCSVエクスポート</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>検索履歴分析</li>
+                                <li class="flex items-center"><span class="text-green-600 mr-2">✓</span>人気クエリ統計</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">📈 実装された主要改善項目</h4>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p class="text-gray-700"><strong>2025-01-07:</strong> チャット履歴永続化機能実装</p>
+                            <p class="text-gray-600 ml-4">リロードでも履歴が消えない問題を解決</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-700"><strong>2025-01-07:</strong> チャット↔データ検索統合</p>
+                            <p class="text-gray-600 ml-4">チャット入力で自動的に社内データ検索を実行</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-700"><strong>2025-01-07:</strong> フィードバック機能強化</p>
+                            <p class="text-gray-600 ml-4">GitHub連携と管理画面の完全統合</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-700"><strong>2025-01-07:</strong> Knowledge Base統合</p>
+                            <p class="text-gray-600 ml-4">Dify + Geminiの完全統合を実現</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 開発スケジュール -->
         <section class="mb-8">
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">7</span>
+                    <span class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">8</span>
                     開発スケジュール（8週間）
                 </h2>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -448,7 +534,7 @@
         <section class="mb-8">
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-emerald-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">8</span>
+                    <span class="bg-emerald-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">9</span>
                     成功指標（KPI）
                 </h2>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -494,7 +580,7 @@
         <section class="mb-8">
             <div class="section-card bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    <span class="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">9</span>
+                    <span class="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">10</span>
                     次のステップ
                 </h2>
                 <div class="grid md:grid-cols-2 gap-6">
