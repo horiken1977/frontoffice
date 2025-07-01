@@ -238,11 +238,23 @@ class KnowledgeSearchUI {
         this.showLoading();
         
         try {
+            // フィードバックシステムに検索クエリを記録
+            if (typeof feedbackSystem !== 'undefined') {
+                feedbackSystem.recordSearchQuery(query, 'data-search');
+            }
+            
             const optimizedQuery = this.knowledgeSearch.optimizeQuery(query);
             const results = await this.knowledgeSearch.searchKnowledge(optimizedQuery);
             
             this.displayResults(results, query);
             this.knowledgeSearch.saveSearchHistory(query, results);
+            
+            // 検索結果が表示されたらフィードバックUIを表示
+            if (typeof feedbackSystem !== 'undefined' && results.success) {
+                setTimeout(() => {
+                    feedbackSystem.createFeedbackUI('feedbackContainer');
+                }, 500);
+            }
             
         } catch (error) {
             console.error('検索エラー:', error);

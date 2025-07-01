@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フィードバック管理 - フロントオフィス生産性向上アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="feedback-system.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
+                <div class="space-x-4">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
+                    <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
+                    <a href="chat.html" class="text-blue-600 hover:text-blue-800 font-medium">チャット入力</a>
+                    <a href="data-search.html" class="text-blue-600 hover:text-blue-800 font-medium">社内データ検索</a>
+                    <a href="feedback-dashboard.html" class="text-gray-800 font-medium border-b-2 border-blue-600">フィードバック管理</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-6">
+        <!-- ヘッダー -->
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">📊 フィードバック管理ダッシュボード</h1>
+            <p class="text-gray-600">ユーザーフィードバックの収集・分析</p>
+        </header>
+
+        <!-- サマリーカード -->
+        <div class="grid md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-sm font-medium text-gray-500">総検索数</h3>
+                <p class="text-2xl font-bold text-gray-800 mt-2" id="totalSearches">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-sm font-medium text-gray-500">今週の検索数</h3>
+                <p class="text-2xl font-bold text-blue-600 mt-2" id="recentSearches">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-sm font-medium text-gray-500">役立った評価</h3>
+                <p class="text-2xl font-bold text-green-600 mt-2" id="helpfulCount">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-sm font-medium text-gray-500">改善要望</h3>
+                <p class="text-2xl font-bold text-orange-600 mt-2" id="improvementCount">0</p>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- 人気の検索クエリ -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">🔥 人気の検索クエリ</h2>
+                <div id="popularQueries" class="space-y-3">
+                    <p class="text-gray-500 text-center py-4">データを読み込み中...</p>
+                </div>
+            </div>
+
+            <!-- 最近の改善要望 -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">💡 最近の改善要望</h2>
+                <div id="recentImprovements" class="space-y-3">
+                    <p class="text-gray-500 text-center py-4">データを読み込み中...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 検索履歴詳細 -->
+        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">📝 検索履歴詳細</h2>
+                <div class="space-x-2">
+                    <button onclick="exportFeedback()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        CSVエクスポート
+                    </button>
+                    <button onclick="clearFeedback()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        データクリア
+                    </button>
+                </div>
+            </div>
+            <div id="searchHistory" class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">日時</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">検索クエリ</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">評価</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ページ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchHistoryBody" class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td colspan="4" class="px-4 py-3 text-center text-gray-500">データを読み込み中...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ページ読み込み時の初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeedbackSummary();
+            loadSearchHistory();
+        });
+
+        // フィードバックサマリーの読み込み
+        function loadFeedbackSummary() {
+            const summary = feedbackSystem.generateSummary();
+            
+            // サマリーカードの更新
+            document.getElementById('totalSearches').textContent = summary.totalSearches;
+            document.getElementById('recentSearches').textContent = summary.recentSearches;
+            document.getElementById('helpfulCount').textContent = summary.recentFeedback.helpful;
+            document.getElementById('improvementCount').textContent = summary.improvements.length;
+            
+            // 人気クエリの表示
+            const popularQueriesDiv = document.getElementById('popularQueries');
+            if (summary.popularQueries.length > 0) {
+                popularQueriesDiv.innerHTML = summary.popularQueries.map((item, index) => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold text-gray-400 mr-3">#${index + 1}</span>
+                            <span class="font-medium">${item.query}</span>
+                        </div>
+                        <span class="text-sm text-gray-500">${item.count}回</span>
+                    </div>
+                `).join('');
+            } else {
+                popularQueriesDiv.innerHTML = '<p class="text-gray-500 text-center py-4">まだデータがありません</p>';
+            }
+            
+            // 改善要望の表示
+            const improvementsDiv = document.getElementById('recentImprovements');
+            if (summary.improvements.length > 0) {
+                improvementsDiv.innerHTML = summary.improvements.slice(-5).reverse().map(item => {
+                    const date = new Date(item.timestamp).toLocaleString('ja-JP');
+                    const categoryLabels = {
+                        'search': '検索機能',
+                        'ui': '画面・操作性',
+                        'feature': '新機能要望',
+                        'bug': '不具合報告',
+                        'other': 'その他'
+                    };
+                    return `
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-blue-600">${categoryLabels[item.category] || item.category}</span>
+                                <span class="text-xs text-gray-500">${date}</span>
+                            </div>
+                            <p class="text-sm text-gray-700">${item.message}</p>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                improvementsDiv.innerHTML = '<p class="text-gray-500 text-center py-4">まだ改善要望がありません</p>';
+            }
+        }
+
+        // 検索履歴の読み込み
+        function loadSearchHistory() {
+            const data = feedbackSystem.getFeedbackData();
+            const tbody = document.getElementById('searchHistoryBody');
+            
+            // 検索クエリと評価を結合
+            const combinedData = [];
+            
+            // 検索クエリを追加
+            data.searchQueries.forEach(query => {
+                combinedData.push({
+                    timestamp: query.timestamp,
+                    query: query.query,
+                    rating: '-',
+                    page: query.page
+                });
+            });
+            
+            // 評価を追加
+            data.ratings.forEach(rating => {
+                combinedData.push({
+                    timestamp: rating.timestamp,
+                    query: rating.query,
+                    rating: rating.rating === 'helpful' ? '👍 役立った' : '👎 役立たなかった',
+                    page: rating.page
+                });
+            });
+            
+            // タイムスタンプでソート（新しい順）
+            combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            if (combinedData.length > 0) {
+                tbody.innerHTML = combinedData.slice(0, 50).map(item => {
+                    const date = new Date(item.timestamp).toLocaleString('ja-JP');
+                    return `
+                        <tr>
+                            <td class="px-4 py-3 text-sm text-gray-500">${date}</td>
+                            <td class="px-4 py-3 text-sm">${item.query}</td>
+                            <td class="px-4 py-3 text-sm">${item.rating}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500">${item.page}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-3 text-center text-gray-500">まだ検索履歴がありません</td></tr>';
+            }
+        }
+
+        // CSVエクスポート
+        function exportFeedback() {
+            const csv = feedbackSystem.exportToCSV();
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `feedback_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // データクリア
+        function clearFeedback() {
+            if (confirm('すべてのフィードバックデータを削除しますか？この操作は取り消せません。')) {
+                localStorage.removeItem(feedbackSystem.storageKey);
+                localStorage.removeItem(feedbackSystem.searchHistoryKey);
+                feedbackSystem.initializeStorage();
+                loadFeedbackSummary();
+                loadSearchHistory();
+                alert('フィードバックデータを削除しました');
+            }
+        }
+    </script>
+</body>
+</html>
