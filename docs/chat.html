@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>チャット入力 - フロントオフィス生産性向上アプリ</title>
+    <title>チャット入力 - フロントオフィス生産性向上アプリ v2.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .chat-container {
@@ -160,20 +160,44 @@
         </div>
 
         <!-- ステータス表示 -->
-        <div class="mt-6 bg-green-50 border-l-4 border-green-400 p-4">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <span class="text-green-400 text-xl">✅</span>
+        <div class="mt-6 bg-blue-50 border-l-4 border-blue-400 p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <span class="text-blue-400 text-xl">🔧</span>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800">Dify AI統合 v2.0</h3>
+                        <p class="mt-1 text-sm text-blue-700">
+                            デバッグモード: F12でコンソールを確認してください
+                        </p>
+                    </div>
                 </div>
-                <div class="ml-3">
-                    <h3 class="text-sm font-medium text-green-800">Dify AI統合完了</h3>
-                    <p class="mt-1 text-sm text-green-700">
-                        Google Gemini Flash APIを使用した営業支援AIが利用可能です。
-                        上記のチャット画面で質問やリクエストを入力してください。
-                    </p>
-                </div>
+                <button onclick="testDifyConnection()" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                    接続テスト
+                </button>
             </div>
         </div>
+
+        <script>
+            function testDifyConnection() {
+                console.log('=== Dify接続テスト開始 ===');
+                console.log('DIFY_CONFIG:', typeof DIFY_CONFIG !== 'undefined' ? DIFY_CONFIG : '未定義');
+                console.log('window.difyChat:', typeof window.difyChat !== 'undefined' ? 'あり' : '未定義');
+                
+                if (typeof window.difyChat !== 'undefined') {
+                    window.difyChat.client.sendMessage('テスト').then(response => {
+                        console.log('✅ API接続成功:', response);
+                        alert('API接続成功！');
+                    }).catch(error => {
+                        console.error('❌ API接続失敗:', error);
+                        alert('API接続失敗: ' + error.message);
+                    });
+                } else {
+                    alert('Dify Chatが初期化されていません');
+                }
+            }
+        </script>
     </div>
 
     <!-- Dify API統合スクリプト（インライン版） -->
@@ -369,15 +393,17 @@
 
         // 即座に初期化（DOMContentLoadedを待たない）
         function initializeDify() {
-            console.log('Dify Chat初期化開始...');
-            console.log('API設定確認:', DIFY_CONFIG);
+            console.log('🚀 Dify Chat v2.0 初期化開始...');
+            console.log('📡 API設定確認:', DIFY_CONFIG);
+            console.log('🔑 APIキー確認:', DIFY_CONFIG.apiKey ? '設定済み' : '未設定');
+            console.log('🌐 エンドポイント:', DIFY_CONFIG.apiEndpoint);
             
             const difyClient = new DifyClient(DIFY_CONFIG);
             const chatUI = new ChatUIManager(difyClient);
             window.difyChat = { client: difyClient, ui: chatUI };
             
-            console.log('Dify Chat初期化完了！');
-            console.log('window.difyChat:', window.difyChat);
+            console.log('✅ Dify Chat初期化完了！');
+            console.log('🎯 window.difyChat:', window.difyChat);
         }
 
         // DOMが読み込まれたら初期化
