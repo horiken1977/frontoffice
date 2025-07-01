@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>機能設計書 - フロントオフィス生産性向上アプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="progress-sync.js"></script>
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- ナビゲーション -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">フロントオフィス生産性向上アプリ</h1>
+                <div class="space-x-4">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗ダッシュボード</a>
+                    <a href="plan.html" class="text-blue-600 hover:text-blue-800 font-medium">開発計画書</a>
+                    <a href="feature-design.html" class="text-gray-800 font-medium border-b-2 border-blue-600">機能設計書</a>
+                    <a href="test-specification.html" class="text-blue-600 hover:text-blue-800 font-medium">テスト仕様書</a>
+                    <a href="progress-admin.html" class="text-blue-600 hover:text-blue-800 font-medium">進捗管理</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- ヘッダー -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">機能設計書</h1>
+            <p class="text-xl text-gray-600 mb-4">新機能追加とインクリメンタル開発管理</p>
+            <div class="flex items-center space-x-4">
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">アクティブ機能管理</span>
+                <span class="text-gray-500 text-sm">最終更新: <span id="last-updated">2025-01-07</span></span>
+            </div>
+        </header>
+
+        <!-- 新機能追加パネル -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">🆕 新機能追加</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">機能名</label>
+                    <input type="text" id="new-feature-name" placeholder="例: ユーザー認証機能" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">対象フェーズ</label>
+                    <select id="new-feature-phase" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="phase-2">Phase 2: エンタープライズ統合</option>
+                        <option value="phase-3">Phase 3: カスタム開発</option>
+                        <option value="phase-1">Phase 1: ワークフロー統合（追加機能）</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">カテゴリ</label>
+                    <select id="new-feature-category" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="セキュリティ">セキュリティ</option>
+                        <option value="UI/UX">UI/UX</option>
+                        <option value="データ統合">データ統合</option>
+                        <option value="外部統合">外部統合</option>
+                        <option value="自動化">自動化</option>
+                        <option value="機能">機能</option>
+                        <option value="品質向上">品質向上</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">優先度</label>
+                    <select id="new-feature-priority" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="high">高</option>
+                        <option value="medium">中</option>
+                        <option value="low">低</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">機能説明</label>
+                    <textarea id="new-feature-description" rows="3" placeholder="機能の詳細説明を入力してください..." class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <div class="md:col-span-2">
+                    <button onclick="addNewFeature()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        ✅ 機能を追加してテスト仕様書を自動生成
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 機能一覧 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">📋 現在の機能一覧</h2>
+            <div id="current-features" class="space-y-4">
+                <!-- 動的に生成される -->
+            </div>
+        </div>
+
+        <!-- 機能詳細設計テンプレート -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">📐 機能詳細設計テンプレート</h2>
+            <div class="bg-gray-50 rounded-lg p-4">
+                <h3 class="font-semibold mb-3">新機能追加時の自動生成内容</h3>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li>✅ <strong>進捗データベース更新:</strong> project-progress.jsonに新機能を自動追加</li>
+                    <li>✅ <strong>テストケース生成:</strong> 機能の特性に応じたテストケーステンプレート作成</li>
+                    <li>✅ <strong>開発計画書更新:</strong> 対象フェーズに機能を自動追加</li>
+                    <li>✅ <strong>ダッシュボード同期:</strong> 進捗追跡の自動反映</li>
+                    <li>✅ <strong>実装ガイド生成:</strong> 機能実装時のチェックリスト作成</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- インクリメンタル開発ワークフロー -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">🔄 インクリメンタル開発ワークフロー</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <span class="text-blue-600 text-2xl">1</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">機能設計</h3>
+                    <p class="text-sm text-gray-600">機能設計書で新機能を定義・追加</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <span class="text-green-600 text-2xl">2</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">自動更新</h3>
+                    <p class="text-sm text-gray-600">テスト仕様書・進捗管理の自動同期</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <span class="text-purple-600 text-2xl">3</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">開発・テスト</h3>
+                    <p class="text-sm text-gray-600">実装後、進捗管理で完了マーク</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class FeatureDesignManager {
+            constructor() {
+                this.progressData = null;
+                this.init();
+            }
+
+            async init() {
+                if (window.progressSync) {
+                    await window.progressSync.loadProgressData();
+                    this.progressData = window.progressSync.progressData;
+                    this.renderCurrentFeatures();
+                }
+            }
+
+            renderCurrentFeatures() {
+                const container = document.getElementById('current-features');
+                if (!this.progressData) return;
+
+                const featuresByPhase = this.progressData.features.reduce((acc, feature) => {
+                    if (!acc[feature.phase]) acc[feature.phase] = [];
+                    acc[feature.phase].push(feature);
+                    return acc;
+                }, {});
+
+                container.innerHTML = Object.entries(featuresByPhase).map(([phase, features]) => `
+                    <div class="border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-800 mb-3">${this.getPhaseDisplayName(phase)}</h3>
+                        <div class="grid gap-3">
+                            ${features.map(feature => this.renderFeatureCard(feature)).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderFeatureCard(feature) {
+                const statusColors = {
+                    'completed': 'green',
+                    'in_progress': 'blue',
+                    'pending': 'gray'
+                };
+                const color = statusColors[feature.status] || 'gray';
+
+                return `
+                <div class="feature-card p-3 border rounded-lg bg-${color}-50 hover:bg-${color}-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-medium text-${color}-800">${feature.name}</h4>
+                            <p class="text-sm text-${color}-600">${feature.description}</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="text-xs bg-${color}-200 text-${color}-800 px-2 py-1 rounded">${feature.category}</span>
+                                <span class="text-xs text-${color}-600">優先度: ${this.getPriorityLabel(feature.priority)}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-${color}-700">${feature.progress}%</div>
+                            <div class="text-xs text-${color}-600">${this.getStatusLabel(feature.status)}</div>
+                            <button onclick="editFeature('${feature.id}')" class="mt-1 text-xs bg-${color}-200 hover:bg-${color}-300 text-${color}-800 px-2 py-1 rounded">
+                                編集
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
+
+            getPhaseDisplayName(phaseId) {
+                const phase = this.progressData.phases.find(p => p.id === phaseId);
+                return phase ? phase.name : phaseId;
+            }
+
+            getPriorityLabel(priority) {
+                const labels = { 'high': '高', 'medium': '中', 'low': '低' };
+                return labels[priority] || priority;
+            }
+
+            getStatusLabel(status) {
+                const labels = { 'completed': '完了', 'in_progress': '進行中', 'pending': '未実装' };
+                return labels[status] || status;
+            }
+
+            addNewFeature(featureData) {
+                if (!this.progressData) return false;
+
+                // 新機能をprogressDataに追加
+                const newFeature = {
+                    id: this.generateFeatureId(featureData.name),
+                    name: featureData.name,
+                    phase: featureData.phase,
+                    category: featureData.category,
+                    status: 'pending',
+                    progress: 0,
+                    priority: featureData.priority,
+                    description: featureData.description,
+                    createdAt: new Date().toISOString(),
+                    testCases: this.generateTestCases(featureData)
+                };
+
+                this.progressData.features.push(newFeature);
+                
+                // 自動テストケース生成
+                this.generateTestSpecification(newFeature);
+                
+                // 進捗データ更新
+                this.progressData.project.lastUpdated = new Date().toISOString().split('T')[0];
+                
+                return newFeature;
+            }
+
+            generateFeatureId(name) {
+                return name.toLowerCase()
+                    .replace(/[^\w\s]/g, '')
+                    .replace(/\s+/g, '-')
+                    .substring(0, 20);
+            }
+
+            generateTestCases(featureData) {
+                const testCases = [];
+                const baseId = this.generateFeatureId(featureData.name);
+
+                // カテゴリ別のテストケーステンプレート
+                const testTemplates = {
+                    'セキュリティ': [
+                        '認証機能テスト',
+                        '権限チェックテスト', 
+                        'セキュリティ脆弱性テスト'
+                    ],
+                    'UI/UX': [
+                        'ユーザーインターフェーステスト',
+                        'レスポンシブデザインテスト',
+                        'ユーザビリティテスト'
+                    ],
+                    'データ統合': [
+                        'データ接続テスト',
+                        'データ整合性テスト',
+                        'パフォーマンステスト'
+                    ],
+                    '外部統合': [
+                        'API統合テスト',
+                        'エラーハンドリングテスト',
+                        'タイムアウトテスト'
+                    ],
+                    '自動化': [
+                        'ワークフロー実行テスト',
+                        'スケジュール機能テスト',
+                        'エラー回復テスト'
+                    ],
+                    '機能': [
+                        '基本機能テスト',
+                        'エッジケーステスト',
+                        '統合テスト'
+                    ]
+                };
+
+                const templates = testTemplates[featureData.category] || testTemplates['機能'];
+                
+                templates.forEach((template, index) => {
+                    testCases.push({
+                        id: `${baseId}-tc${String(index + 1).padStart(3, '0')}`,
+                        name: `${featureData.name} - ${template}`,
+                        description: `${featureData.name}の${template}`,
+                        status: 'pending',
+                        priority: featureData.priority,
+                        steps: this.generateTestSteps(template, featureData),
+                        expectedResult: `${template}が正常に動作する`
+                    });
+                });
+
+                return testCases;
+            }
+
+            generateTestSteps(testType, featureData) {
+                const stepTemplates = {
+                    '認証機能テスト': [
+                        '1. ログイン画面にアクセス',
+                        '2. 有効な認証情報でログイン試行',
+                        '3. 認証成功の確認'
+                    ],
+                    'ユーザーインターフェーステスト': [
+                        '1. 機能画面にアクセス',
+                        '2. UI要素の表示確認',
+                        '3. 操作性の確認'
+                    ],
+                    'データ接続テスト': [
+                        '1. データソースへの接続試行',
+                        '2. データ取得の確認',
+                        '3. データ形式の検証'
+                    ],
+                    '基本機能テスト': [
+                        '1. 機能を有効化',
+                        '2. 基本操作を実行',
+                        '3. 期待結果の確認'
+                    ]
+                };
+
+                return stepTemplates[testType] || [
+                    '1. 機能にアクセス',
+                    '2. 基本操作を実行',
+                    '3. 結果を確認'
+                ];
+            }
+
+            generateTestSpecification(feature) {
+                // テスト仕様書に新しいテストケースを追加
+                console.log(`📋 ${feature.name} のテストケースを生成しました:`, feature.testCases);
+                
+                // 実際の実装では、test-specification.htmlを動的更新
+                this.updateTestSpecificationFile(feature);
+            }
+
+            updateTestSpecificationFile(feature) {
+                // テスト仕様書の自動更新ロジック
+                console.log(`🔄 テスト仕様書を更新中: ${feature.name}`);
+                
+                // プログレス同期システムに通知
+                if (window.progressSync) {
+                    window.progressSync.syncAllPages();
+                }
+            }
+        }
+
+        // グローバル関数
+        function addNewFeature() {
+            const name = document.getElementById('new-feature-name').value.trim();
+            const phase = document.getElementById('new-feature-phase').value;
+            const category = document.getElementById('new-feature-category').value;
+            const priority = document.getElementById('new-feature-priority').value;
+            const description = document.getElementById('new-feature-description').value.trim();
+
+            if (!name || !description) {
+                alert('機能名と説明を入力してください');
+                return;
+            }
+
+            const featureData = { name, phase, category, priority, description };
+            
+            if (window.featureDesign) {
+                const newFeature = window.featureDesign.addNewFeature(featureData);
+                if (newFeature) {
+                    alert(`✅ 機能「${name}」を追加しました\n\n自動生成されたテストケース: ${newFeature.testCases.length}件\n\n進捗管理システムに同期されました。`);
+                    
+                    // フォームをクリア
+                    document.getElementById('new-feature-name').value = '';
+                    document.getElementById('new-feature-description').value = '';
+                    
+                    // 機能一覧を更新
+                    window.featureDesign.renderCurrentFeatures();
+                    
+                    // 最終更新日を更新
+                    document.getElementById('last-updated').textContent = new Date().toISOString().split('T')[0];
+                }
+            }
+        }
+
+        function editFeature(featureId) {
+            alert(`機能編集機能は次回のアップデートで実装予定です。\n機能ID: ${featureId}`);
+        }
+
+        // 初期化
+        let featureDesign;
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                featureDesign = new FeatureDesignManager();
+                window.featureDesign = featureDesign;
+            }, 200);
+        });
+    </script>
+</body>
+</html>

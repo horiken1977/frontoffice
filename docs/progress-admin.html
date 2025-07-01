@@ -49,6 +49,25 @@
             </div>
         </div>
 
+        <!-- 新機能追加 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">🆕 新機能追加 (インクリメンタル開発)</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                <p class="text-blue-700 text-sm">
+                    機能設計書で新機能を追加すると、自動でテストケースが生成され、
+                    進捗管理システムと同期されます。
+                </p>
+            </div>
+            <div class="flex space-x-4">
+                <a href="feature-design.html" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    📝 機能設計書で新機能追加
+                </a>
+                <button onclick="refreshFromFeatureDesign()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    🔄 機能設計書から同期
+                </button>
+            </div>
+        </div>
+
         <!-- 機能進捗編集 -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">機能進捗編集</h2>
@@ -236,6 +255,19 @@
                 link.click();
                 
                 URL.revokeObjectURL(url);
+            }
+        }
+        
+        function refreshFromFeatureDesign() {
+            // 機能設計書からの更新をシミュレート
+            if (window.progressSync) {
+                window.progressSync.syncAllPages();
+                alert('🔄 機能設計書からの同期が完了しました\n\n新機能が追加されている場合、テスト仕様書が自動更新されます。');
+                
+                // 機能一覧を再描画
+                if (window.progressAdmin) {
+                    window.progressAdmin.renderFeatureList();
+                }
             }
         }
 

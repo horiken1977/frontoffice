@@ -292,12 +292,204 @@ class ProgressSyncSystem {
             planContainer.innerHTML = this.generatePlanHTML();
         }
         
+        // テスト仕様書更新
+        this.updateTestSpecification();
+        
         console.log('✅ All pages synchronized with progress data');
+    }
+    
+    // テスト仕様書の動的更新
+    updateTestSpecification() {
+        const testContainer = document.getElementById('dynamic-test-cases');
+        if (testContainer) {
+            testContainer.innerHTML = this.generateDynamicTestCases();
+        }
+        
+        // テスト統計の更新
+        this.updateTestStatistics();
+    }
+    
+    // 動的テストケース生成
+    generateDynamicTestCases() {
+        if (!this.progressData) return '';
+        
+        const pendingFeatures = this.progressData.features.filter(f => f.testCases && f.testCases.length > 0);
+        
+        return pendingFeatures.map(feature => {
+            const phaseNum = feature.phase.replace('phase-', '');
+            return `
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">${feature.name} - テストケース</h3>
+                <div class="space-y-3">
+                    ${feature.testCases.map(testCase => this.generateTestCaseHTML(testCase, feature)).join('')}
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+    
+    // 個別テストケースHTML生成
+    generateTestCaseHTML(testCase, feature) {
+        const statusClass = {
+            'pending': 'status-pending',
+            'in_progress': 'status-pending', 
+            'completed': 'status-passed',
+            'failed': 'status-failed'
+        }[testCase.status] || 'status-pending';
+        
+        const statusIcon = {
+            'pending': '⏳ PENDING',
+            'in_progress': '⏳ PENDING',
+            'completed': '✅ PASSED', 
+            'failed': '❌ FAILED'
+        }[testCase.status] || '⏳ PENDING';
+        
+        const priorityColor = {
+            'high': 'text-red-600',
+            'medium': 'text-yellow-600',
+            'low': 'text-green-600'
+        }[testCase.priority] || 'text-gray-600';
+        
+        return `
+        <div class="test-case p-4 border-l-4 rounded-lg ${statusClass}">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h4 class="font-semibold">${testCase.name}</h4>
+                    <p class="text-sm text-gray-600 mt-1">${testCase.description}</p>
+                    <span class="text-xs ${priorityColor} font-medium">優先度: ${testCase.priority.toUpperCase()}</span>
+                </div>
+                <span class="px-3 py-1 rounded-full text-sm font-medium">${statusIcon}</span>
+            </div>
+            <div class="mt-3 text-sm text-gray-600">
+                <div class="mb-2">
+                    <strong>手順:</strong>
+                    <ol class="list-decimal list-inside ml-4 mt-1">
+                        ${testCase.steps.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+                <p><strong>期待値:</strong> ${testCase.expectedResult}</p>
+                <p><strong>結果:</strong> ${this.getTestResultMessage(testCase.status)}</p>
+            </div>
+            <div class="mt-3 flex space-x-2">
+                <button onclick="updateTestCaseStatus('${testCase.id}', 'completed')" 
+                        class="text-xs bg-green-100 hover:bg-green-200 text-green-800 px-2 py-1 rounded">
+                    ✅ 成功
+                </button>
+                <button onclick="updateTestCaseStatus('${testCase.id}', 'failed')" 
+                        class="text-xs bg-red-100 hover:bg-red-200 text-red-800 px-2 py-1 rounded">
+                    ❌ 失敗
+                </button>
+                <button onclick="updateTestCaseStatus('${testCase.id}', 'pending')" 
+                        class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded">
+                    ⏳ 保留
+                </button>
+            </div>
+        </div>
+        `;
+    }
+    
+    // テスト結果メッセージ
+    getTestResultMessage(status) {
+        const messages = {
+            'pending': '⏳ テスト実行待ち',
+            'in_progress': '🔄 テスト実行中',
+            'completed': '✅ テスト成功 - 期待通りの動作を確認',
+            'failed': '❌ テスト失敗 - 要調査・修正'
+        };
+        return messages[status] || '⏳ テスト実行待ち';
+    }
+    
+    // テスト統計更新
+    updateTestStatistics() {
+        if (!this.progressData) return;
+        
+        let passed = 0, failed = 0, pending = 0;
+        
+        this.progressData.features.forEach(feature => {
+            if (feature.testCases) {
+                feature.testCases.forEach(testCase => {
+                    switch(testCase.status) {
+                        case 'completed': passed++; break;
+                        case 'failed': failed++; break;
+                        default: pending++; break;
+                    }
+                });
+            }
+        });
+        
+        // 既存の固定テストケースも含める（Phase 0/1の既存テスト）
+        passed += 8; // 既存の成功テスト
+        pending += 2; // 既存の保留テスト
+        
+        const total = passed + failed + pending;
+        const coverage = total > 0 ? Math.round((passed / total) * 100) : 0;
+        
+        // 統計を更新
+        const passedEl = document.getElementById('passed-count');
+        const failedEl = document.getElementById('failed-count'); 
+        const pendingEl = document.getElementById('pending-count');
+        const coverageEl = document.getElementById('coverage');
+        
+        if (passedEl) passedEl.textContent = passed;
+        if (failedEl) failedEl.textContent = failed;
+        if (pendingEl) pendingEl.textContent = pending;
+        if (coverageEl) coverageEl.textContent = coverage + '%';
+    }
+    
+    // 新機能追加時のテストケース更新
+    addFeatureWithTests(featureData) {
+        if (!this.progressData) return null;
+        
+        // 機能をprogressDataに追加
+        const newFeature = {
+            ...featureData,
+            id: featureData.id || this.generateFeatureId(featureData.name),
+            status: 'pending',
+            progress: 0,
+            createdAt: new Date().toISOString()
+        };
+        
+        this.progressData.features.push(newFeature);
+        
+        // プロジェクト更新日を更新
+        this.progressData.project.lastUpdated = new Date().toISOString().split('T')[0];
+        
+        // 全ページを同期
+        this.syncAllPages();
+        
+        return newFeature;
+    }
+    
+    // 機能ID生成ヘルパー
+    generateFeatureId(name) {
+        return name.toLowerCase()
+            .replace(/[^\w\s]/g, '')
+            .replace(/\s+/g, '-')
+            .substring(0, 20) + '-' + Date.now();
     }
 }
 
 // グローバルインスタンス
 window.progressSync = new ProgressSyncSystem();
+
+// グローバル関数 - テストケースステータス更新
+function updateTestCaseStatus(testCaseId, status) {
+    if (!window.progressSync?.progressData) return;
+    
+    // テストケースを検索・更新
+    window.progressSync.progressData.features.forEach(feature => {
+        if (feature.testCases) {
+            const testCase = feature.testCases.find(tc => tc.id === testCaseId);
+            if (testCase) {
+                testCase.status = status;
+                console.log(`テストケース ${testCase.name} のステータスを ${status} に更新`);
+                
+                // UI更新
+                window.progressSync.updateTestSpecification();
+            }
+        }
+    });
+}
 
 // ページ読み込み完了時に同期
 document.addEventListener('DOMContentLoaded', () => {
