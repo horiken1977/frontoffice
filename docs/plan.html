@@ -59,9 +59,9 @@
             <h1 class="text-4xl font-bold text-gray-800 mb-2">開発計画書</h1>
             <p class="text-xl text-gray-600 mb-4">フロントオフィス生産性向上アプリケーション</p>
             <div class="flex items-center space-x-4">
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium phase-badge">Phase 1: MVP開発</span>
-                <span class="text-gray-500 text-sm">バージョン: v1.0</span>
-                <span class="text-gray-500 text-sm">最終更新: 2025-06-30</span>
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium phase-badge">Phase 0: ゼロコストMVP完了</span>
+                <span class="text-gray-500 text-sm">バージョン: v2.0</span>
+                <span class="text-gray-500 text-sm">最終更新: 2025-07-01</span>
             </div>
         </header>
 
@@ -124,8 +124,41 @@
         <section class="mb-8">
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">3</span>
-                    Phase 1: MVP機能（必須）
+                    <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">3</span>
+                    Phase 0: ゼロコストMVP（完了）
+                </h2>
+                
+                <!-- Phase 0完了状況 -->
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                    <h3 class="text-lg font-semibold text-green-800 mb-2">✅ Phase 0 完了状況</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-medium text-green-700 mb-2">実装完了機能</h4>
+                            <ul class="text-sm text-green-600 space-y-1">
+                                <li>✅ Dify + Google Gemini統合</li>
+                                <li>✅ チャットベース営業支援UI</li>
+                                <li>✅ 日本語入力対応（誤送信防止）</li>
+                                <li>✅ 5000文字長文対応</li>
+                                <li>✅ 下書き保存・自動保存機能</li>
+                                <li>✅ 営業6機能のプロンプト対応</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-orange-700 mb-2">未実装（Phase 1候補）</h4>
+                            <ul class="text-sm text-orange-600 space-y-1">
+                                <li>⚠️ 社内DB・ファイルサーバー検索</li>
+                                <li>⚠️ CRM/SFA連携</li>
+                                <li>⚠️ ワークフロー自動化</li>
+                                <li>⚠️ バッチ処理機能</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Phase 1予定機能 -->
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center mt-8">
+                    <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">4</span>
+                    Phase 1: ワークフロー統合（予定）
                 </h2>
                 
                 <!-- 営業機能 -->
@@ -134,21 +167,22 @@
                         <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium mr-3">営業機能</span>
                     </h3>
                     <div class="grid gap-3">
-                        <div class="feature-item p-4 border rounded-lg">
+                        <div class="feature-item p-4 border rounded-lg bg-green-50">
                             <div class="flex items-start">
-                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">1</span>
+                                <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">✓</span>
                                 <div>
-                                    <h4 class="font-semibold text-gray-800">チャットベースの要求入力インターフェース</h4>
-                                    <p class="text-gray-600 text-sm mt-1">直感的なチャット形式で営業要求を入力できるUI</p>
+                                    <h4 class="font-semibold text-green-800">チャットベースの要求入力インターフェース</h4>
+                                    <p class="text-green-600 text-sm mt-1">✅ 完了: 直感的なチャット形式で営業要求を入力できるUI</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="feature-item p-4 border rounded-lg">
+                        <div class="feature-item p-4 border rounded-lg bg-orange-50">
                             <div class="flex items-start">
-                                <span class="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">2</span>
+                                <span class="bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-1">!</span>
                                 <div>
-                                    <h4 class="font-semibold text-gray-800">社内DB・ファイルサーバー（クラウド含む）検索機能</h4>
-                                    <p class="text-gray-600 text-sm mt-1">既存の社内データベースやクラウドストレージとの連携</p>
+                                    <h4 class="font-semibold text-orange-800">社内DB・ファイルサーバー（クラウド含む）検索機能</h4>
+                                    <p class="text-orange-600 text-sm mt-1">⚠️ 未実装: 既存の社内データベースやクラウドストレージとの連携</p>
+                                    <p class="text-orange-500 text-xs mt-1">📋 要決定: 連携方式（API/ファイル/DB直接）、権限管理</p>
                                 </div>
                             </div>
                         </div>
@@ -238,12 +272,66 @@
             </div>
         </section>
 
+        <!-- 未決事項・要決定事項 -->
+        <section class="mb-8">
+            <div class="section-card bg-red-50 border-2 border-red-200 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-red-800 mb-4 flex items-center">
+                    <span class="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">⚠</span>
+                    未決事項・要決定事項
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-red-700 mb-3">📋 技術的未決事項</h3>
+                        <div class="space-y-3">
+                            <div class="border-l-4 border-red-400 pl-3">
+                                <h4 class="font-semibold text-red-800">社内データ連携方式</h4>
+                                <p class="text-sm text-red-600">ファイルアップロード vs API連携 vs DB直接接続</p>
+                            </div>
+                            <div class="border-l-4 border-red-400 pl-3">
+                                <h4 class="font-semibold text-red-800">権限管理・セキュリティ</h4>
+                                <p class="text-sm text-red-600">ユーザー認証、データアクセス制御の必要性</p>
+                            </div>
+                            <div class="border-l-4 border-red-400 pl-3">
+                                <h4 class="font-semibold text-red-800">CRM/SFA連携方式</h4>
+                                <p class="text-sm text-red-600">Salesforce, HubSpot, kintone等の連携優先度</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-orange-700 mb-3">📅 ビジネス未決事項</h3>
+                        <div class="space-y-3">
+                            <div class="border-l-4 border-orange-400 pl-3">
+                                <h4 class="font-semibold text-orange-800">次フェーズの選択</h4>
+                                <p class="text-sm text-orange-600">Phase 1($50-200) vs Phase 2($500-3000) vs 現状維持</p>
+                            </div>
+                            <div class="border-l-4 border-orange-400 pl-3">
+                                <h4 class="font-semibold text-orange-800">ユーザーフィードバック収集</h4>
+                                <p class="text-sm text-orange-600">初期ユーザー10名以上の取り組み方針</p>
+                            </div>
+                            <div class="border-l-4 border-orange-400 pl-3">
+                                <h4 class="font-semibold text-orange-800">運用コスト管理</h4>
+                                <p class="text-sm text-orange-600">Dify/Geminiの使用量監視と予算計画</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-yellow-800 mb-2">🔥 緊急決定事項（今週中）</h4>
+                    <ul class="text-sm text-yellow-700 space-y-1">
+                        <li>1. 社内データ連携のプロトタイプ方式決定</li>
+                        <li>2. 次フェーズ進行の判断基準設定</li>
+                        <li>3. 初期ユーザー募集方法の決定</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <!-- Phase 2: 拡張機能 -->
         <section class="mb-8">
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">4</span>
-                    Phase 2: 拡張機能
+                    <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">5</span>
+                    Phase 2: エンタープライズ統合（予定）
                 </h2>
                 <div class="grid gap-3">
                     <div class="feature-item p-4 border rounded-lg bg-gray-50">
@@ -275,7 +363,7 @@
         <section class="mb-8">
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">5</span>
+                    <span class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">6</span>
                     技術アーキテクチャ
                 </h2>
                 <div class="grid md:grid-cols-3 gap-6">
@@ -311,7 +399,7 @@
         <section class="mb-8">
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">6</span>
+                    <span class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">7</span>
                     開発スケジュール（8週間）
                 </h2>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -360,7 +448,7 @@
         <section class="mb-8">
             <div class="section-card bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <span class="bg-emerald-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">7</span>
+                    <span class="bg-emerald-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">8</span>
                     成功指標（KPI）
                 </h2>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -406,24 +494,24 @@
         <section class="mb-8">
             <div class="section-card bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    <span class="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">8</span>
+                    <span class="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">9</span>
                     次のステップ
                 </h2>
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <h3 class="text-lg font-semibold mb-3">即座に実行</h3>
+                        <h3 class="text-lg font-semibold mb-3">Phase 0 完了項目</h3>
                         <ul class="space-y-2 text-blue-100">
-                            <li>• 技術スタック最終決定</li>
-                            <li>• 開発環境セットアップ</li>
-                            <li>• UIモックアップ作成</li>
+                            <li>✅ ゼロコストMVP基盤構築完了</li>
+                            <li>✅ Dify + Gemini統合稼働中</li>
+                            <li>✅ 営業支援AI機能実装完了</li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold mb-3">準備段階</h3>
+                        <h3 class="text-lg font-semibold mb-3">次の決定事項</h3>
                         <ul class="space-y-2 text-blue-100">
-                            <li>• バックエンドAPI設計</li>
-                            <li>• Sprint 1開始</li>
-                            <li>• チーム体制確立</li>
+                            <li>🔥 社内データ連携方式の決定</li>
+                            <li>🔥 次フェーズ進行の判断</li>
+                            <li>🔥 初期ユーザー募集方法</li>
                         </ul>
                     </div>
                 </div>
