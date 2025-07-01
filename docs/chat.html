@@ -176,8 +176,206 @@
         </div>
     </div>
 
-    <!-- Dify API統合スクリプト -->
-    <script src="dify-integration.js"></script>
+    <!-- Dify API統合スクリプト（インライン版） -->
+    <script>
+        // Dify API設定
+        const DIFY_CONFIG = {
+            apiEndpoint: 'https://api.dify.ai/v1/chat-messages',
+            apiKey: 'app-fOpZcklIbAygUiotfGdH58zY',
+            conversationId: null
+        };
+
+        // Difyクライアントクラス
+        class DifyClient {
+            constructor(config) {
+                this.config = config;
+                this.conversationId = null;
+            }
+
+            async sendMessage(message, user = 'default-user') {
+                try {
+                    const response = await fetch(this.config.apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${this.config.apiKey}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            inputs: {},
+                            query: message,
+                            response_mode: 'blocking',
+                            conversation_id: this.conversationId,
+                            user: user
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data.conversation_id) {
+                        this.conversationId = data.conversation_id;
+                    }
+
+                    return {
+                        answer: data.answer,
+                        conversationId: data.conversation_id,
+                        messageId: data.message_id
+                    };
+                } catch (error) {
+                    console.error('Dify API Error:', error);
+                    return {
+                        answer: 'エラーが発生しました。しばらくしてから再度お試しください。',
+                        error: true
+                    };
+                }
+            }
+        }
+
+        // チャットUIマネージャー
+        class ChatUIManager {
+            constructor(difyClient) {
+                this.difyClient = difyClient;
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.charCount = document.getElementById('charCount');
+                this.quickActions = document.querySelectorAll('.quick-action');
+                
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                this.messageInput.addEventListener('input', () => {
+                    const length = this.messageInput.value.length;
+                    this.charCount.textContent = length;
+                    this.sendButton.disabled = length === 0;
+                });
+
+                this.messageInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (!this.sendButton.disabled) {
+                            this.sendMessage();
+                        }
+                    }
+                });
+
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+
+                this.quickActions.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const message = button.getAttribute('data-message');
+                        this.messageInput.value = message;
+                        this.messageInput.dispatchEvent(new Event('input'));
+                        this.messageInput.focus();
+                    });
+                });
+
+                this.messageInput.focus();
+            }
+
+            async sendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message) return;
+
+                this.addMessage('user', message);
+                this.messageInput.value = '';
+                this.messageInput.dispatchEvent(new Event('input'));
+
+                this.sendButton.disabled = true;
+                this.sendButton.textContent = '送信中...';
+
+                const typingIndicator = this.addTypingIndicator();
+
+                try {
+                    const response = await this.difyClient.sendMessage(message);
+                    typingIndicator.remove();
+                    this.addMessage('ai', response.answer);
+                } catch (error) {
+                    console.error('Failed to send message:', error);
+                    typingIndicator.remove();
+                    this.addMessage('ai', 'エラーが発生しました。もう一度お試しください。');
+                } finally {
+                    this.sendButton.disabled = false;
+                    this.sendButton.textContent = '送信';
+                }
+            }
+
+            addMessage(sender, text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message flex items-start space-x-3';
+                
+                if (sender === 'user') {
+                    messageDiv.innerHTML = `
+                        <div class="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                            You
+                        </div>
+                        <div class="bg-gray-100 rounded-lg px-4 py-3 max-w-md">
+                            <p class="text-gray-800 whitespace-pre-wrap">${this.escapeHtml(text)}</p>
+                        </div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                            AI
+                        </div>
+                        <div class="bg-blue-50 rounded-lg px-4 py-3 max-w-md">
+                            <div class="text-gray-800 whitespace-pre-wrap">${this.formatAIResponse(text)}</div>
+                        </div>
+                    `;
+                }
+
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message flex items-start space-x-3 typing-indicator';
+                typingDiv.innerHTML = `
+                    <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                        AI
+                    </div>
+                    <div class="bg-blue-50 rounded-lg px-4 py-3">
+                        <div class="flex space-x-2">
+                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        </div>
+                    </div>
+                `;
+                this.chatMessages.appendChild(typingDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                return typingDiv;
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            formatAIResponse(text) {
+                return text
+                    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                    .replace(/\n/g, '<br>')
+                    .replace(/• /g, '• ');
+            }
+        }
+
+        // DOMが読み込まれたら初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Dify Chat初期化開始...');
+            const difyClient = new DifyClient(DIFY_CONFIG);
+            const chatUI = new ChatUIManager(difyClient);
+            window.difyChat = { client: difyClient, ui: chatUI };
+            console.log('Dify Chat初期化完了！');
+        });
+    </script>
     
     <script>
         // フォールバック: Dify APIが設定されていない場合のシミュレーション

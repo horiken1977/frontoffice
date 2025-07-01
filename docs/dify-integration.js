@@ -241,6 +241,10 @@ class ChatUIManager {
 
 // 初期化関数
 function initializeDifyChat() {
+    console.log('Dify Chat初期化開始...');
+    console.log('API Endpoint:', DIFY_CONFIG.apiEndpoint);
+    console.log('API Key:', DIFY_CONFIG.apiKey.substring(0, 10) + '...');
+    
     // API設定が完了しているか確認
     if (DIFY_CONFIG.apiEndpoint === 'YOUR_DIFY_API_ENDPOINT') {
         console.error('Dify API設定が完了していません。dify-integration.jsのDIFY_CONFIGを更新してください。');
