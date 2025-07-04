@@ -240,6 +240,7 @@ class DocumentUpdater {
         const claudePath = path.join(this.projectRoot, 'CLAUDE.md');
         
         if (!fs.existsSync(claudePath)) {
+            console.log(`⚠️  CLAUDE.mdが見つかりません: ${claudePath}`);
             return;
         }
 
@@ -260,6 +261,14 @@ class DocumentUpdater {
 
         const updatedContent = content + newLogEntry;
         fs.writeFileSync(claudePath, updatedContent);
+        
+        // ターミナルに記録完了を出力
+        console.log('✅ CLAUDE.md更新完了');
+        console.log(`📝 記録時刻: ${timestamp}`);
+        console.log(`📊 検出変更: ${Object.entries(analysis).filter(([key, items]) => 
+            key !== 'timestamp' && Array.isArray(items) && items.length > 0
+        ).length}カテゴリ`);
+        console.log(`📁 更新ファイル: ${Object.values(updates).flat().length}件`);
     }
 
     /**
@@ -267,6 +276,12 @@ class DocumentUpdater {
      */
     async updateDocumentIndex() {
         const indexPath = path.join(this.docsPath, 'index.md');
+        
+        // docsディレクトリが存在しない場合は作成
+        if (!fs.existsSync(this.docsPath)) {
+            fs.mkdirSync(this.docsPath, { recursive: true });
+        }
+        
         const docs = fs.readdirSync(this.docsPath)
             .filter(file => file.endsWith('.md'))
             .sort();

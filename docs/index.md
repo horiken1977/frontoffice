@@ -1,6 +1,6 @@
 # ドキュメントインデックス
 
-最終更新: 2025-07-04T10:16:01.676Z
+最終更新: 2025-07-04T15:20:27.658Z
 
 ## 利用可能なドキュメント
 
@@ -11,4 +11,5 @@
 - [dify-troubleshooting.md](./dify-troubleshooting.md)
 - [feature-changelog.md](./feature-changelog.md)
 - [implementation-status.md](./implementation-status.md)
+- [index.md](./index.md)
 - [test-results.md](./test-results.md)

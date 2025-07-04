@@ -10,7 +10,11 @@
     "uninstall-hooks": "node uninstall-hooks.js",
     "validate-config": "node validate-config.js",
     "manual-update": "node main.js --auto-update --verbose",
-    "sync-docs": "node main.js --pre-push-sync --verbose"
+    "sync-docs": "node main.js --pre-push-sync --verbose",
+    "start-scheduler": "./start-scheduler.sh",
+    "stop-scheduler": "./stop-scheduler.sh",
+    "status-scheduler": "./status-scheduler.sh",
+    "scheduler": "node scheduler.js"
   },
   "keywords": [
     "documentation",

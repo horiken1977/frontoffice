@@ -10,7 +10,8 @@ const DocumentUpdater = require('./doc-updater');
 
 class AutomationMain {
     constructor() {
-        this.projectRoot = process.cwd();
+        // automationディレクトリから親ディレクトリ（プロジェクトルート）に変更
+        this.projectRoot = path.dirname(process.cwd());
         this.docUpdater = new DocumentUpdater({ projectRoot: this.projectRoot });
         this.args = this.parseArguments();
     }
@@ -190,4 +191,24 @@ Claude Code ドキュメント自動更新システム
     }
 
     generateTestChatContent() {
-        return `Human: 新しいチャット機能を実装してください。
+        return `Human: ドキュメントの自動更新システムが稼働しているか確認をお願いします。
+Assistant: 確認します。システムのチェックと修正を行い、テストを実行します。修正してテストをお願いします。
+Human: はい、修正してテストをお願いします。また、Claude.mdに記録されたら、記録された旨をターミナル画面に出力するようにしてください。
+Assistant: 修正してテストを実行し、記録時の出力機能を追加します。ターミナル出力機能も実装済みです。`;
+    }
+
+    log(message) {
+        console.log(`[${new Date().toISOString()}] ${message}`);
+    }
+}
+
+// メイン実行
+if (require.main === module) {
+    const main = new AutomationMain();
+    main.run().then(exitCode => {
+        process.exit(exitCode);
+    }).catch(error => {
+        console.error('Fatal error:', error);
+        process.exit(1);
+    });
+}
