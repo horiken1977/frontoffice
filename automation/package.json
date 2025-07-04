@@ -1,0 +1,37 @@
+{
+  "name": "frontoffice-doc-automation",
+  "version": "1.0.0",
+  "description": "Claude Code チャット内容からドキュメント自動更新システム",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "node test.js",
+    "install-hooks": "node install-hooks.js",
+    "uninstall-hooks": "node uninstall-hooks.js",
+    "validate-config": "node validate-config.js",
+    "manual-update": "node main.js --auto-update --verbose",
+    "sync-docs": "node main.js --pre-push-sync --verbose"
+  },
+  "keywords": [
+    "documentation",
+    "automation",
+    "claude-code",
+    "git-hooks",
+    "chat-analysis"
+  ],
+  "author": "Claude Code Automation System",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "bugs": {
+    "url": "https://github.com/horiken1977/frontoffice/issues"
+  },
+  "homepage": "https://github.com/horiken1977/frontoffice#readme"
+}

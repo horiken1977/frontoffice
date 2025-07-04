@@ -1,0 +1,107 @@
+{
+  "projectName": "frontoffice",
+  "version": "1.0.0",
+  "autoUpdate": {
+    "enabled": true,
+    "triggers": {
+      "gitCommit": true,
+      "gitPush": true,
+      "fileChange": false
+    },
+    "chatSources": {
+      "environmentVariable": "CLAUDE_CHAT_CONTENT",
+      "logFiles": [
+        ".claude-chat-log.json",
+        "chat.log",
+        "$HOME/.claude-code/chat.log"
+      ],
+      "apiEndpoint": null
+    }
+  },
+  "documentTargets": {
+    "developmentLog": {
+      "file": "docs/development-log.md",
+      "enabled": true,
+      "categories": ["features", "tests", "bugs", "configs"]
+    },
+    "featureChangelog": {
+      "file": "docs/feature-changelog.md", 
+      "enabled": true,
+      "categories": ["features", "bugs"]
+    },
+    "testResults": {
+      "file": "docs/test-results.md",
+      "enabled": true,
+      "categories": ["tests"]
+    },
+    "implementationStatus": {
+      "file": "docs/implementation-status.md",
+      "enabled": true,
+      "categories": ["features", "bugs", "configs"]
+    },
+    "claudeLog": {
+      "file": "CLAUDE.md",
+      "enabled": true,
+      "categories": ["features", "tests", "bugs", "docs", "configs"]
+    }
+  },
+  "analysisPatterns": {
+    "features": {
+      "keywords": ["新しい機能", "機能追加", "機能を追加", "実装", "新規.*実装", "実装.*機能", "feature.*add", "add.*feature", "implement"],
+      "weight": 1.0
+    },
+    "tests": {
+      "keywords": ["テスト", "test", "testing", "検証", "verify", "validation", "テストケース", "test case"],
+      "weight": 0.8
+    },
+    "bugs": {
+      "keywords": ["バグ修正", "bug.*fix", "fix.*bug", "不具合", "issue.*fix", "修正", "エラー.*解決", "solve.*error"],
+      "weight": 1.2
+    },
+    "docs": {
+      "keywords": ["ドキュメント", "document", "docs", "README", "readme", "仕様書", "specification"],
+      "weight": 0.6
+    },
+    "configs": {
+      "keywords": ["設定", "config", "configuration", "環境", "environment", "env", "セットアップ", "setup"],
+      "weight": 0.7
+    }
+  },
+  "gitIntegration": {
+    "autoCommitDocs": true,
+    "commitMessageTemplate": "Auto-update: Documentation sync from Claude Code chat\n\n🤖 Generated with Claude Code automation system\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+    "branchRestrictions": [],
+    "skipPatterns": [
+      "WIP:",
+      "TEMP:",
+      "AUTO:"
+    ]
+  },
+  "logging": {
+    "level": "info",
+    "file": "automation/logs/automation.log",
+    "maxSize": "10MB",
+    "retention": "30d"
+  },
+  "notifications": {
+    "enabled": false,
+    "webhook": null,
+    "email": null,
+    "slack": null
+  },
+  "backup": {
+    "enabled": true,
+    "directory": "automation/backups",
+    "retention": "7d",
+    "beforeUpdate": true
+  },
+  "security": {
+    "allowedUsers": [],
+    "restrictedPaths": [
+      "/.git/",
+      "/node_modules/",
+      "/.env"
+    ],
+    "sanitizeContent": true
+  }
+}
